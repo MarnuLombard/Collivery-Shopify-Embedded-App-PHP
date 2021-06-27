@@ -22,7 +22,7 @@
     "license": "Proprietary",
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
+            "ShopifyPlugin\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace ShopifyPlugin\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
+use ShopifyPlugin\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
