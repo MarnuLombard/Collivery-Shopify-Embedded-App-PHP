@@ -52,7 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => 'https://'.env('APP_DOMAIN', 'localhost'),
+    'domain' => env('APP_DOMAIN', 'localhost'),
 
     'asset_url' => env('ASSET_URL', null),
 
