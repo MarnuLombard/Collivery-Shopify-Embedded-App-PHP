@@ -1,17 +1,38 @@
 const mix = require('laravel-mix');
+const {CompileRoutes} = require('@mds-tech/compile_routes')
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel applications. By default, we are compiling the CSS
- | file for the application as well as bundling up all the JS files.
- |
- */
+const compileRoutes = new CompileRoutes({outputPath: 'resource/js/routes.js'});
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+// Compile our routes js file
+// Watch our routes php files in order to recompile js routes
+if (Mix.isWatching() || Mix.isPolling()) {
+  compileRoutes.watch({
+    routesGlob: './routes/**/*.php',
+    pollingInterval: 700, // ms
+  });
+}
+
+// Initial compile on startup
+compileRoutes.compile();
+
+mix
+.sass('resources/sass/app.scss', 'public/css/')
+.ts('resources/js/app.js', 'public/js')
+.react()
+.webpackConfig({
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/
+            }
+        ]
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
+    },
+
+})
+.sourceMaps()
+.version();
