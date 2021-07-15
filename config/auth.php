@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => ShopifyPlugin\Models\User::class,
+            'model' => ShopifyPlugin\Models\Shop::class,
         ],
 
         // 'users' => [

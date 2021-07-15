@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use ShopifyPlugin\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use ShopifyPlugin\Models\Shop;
 
 class UserFactory extends Factory
 {
@@ -13,7 +13,7 @@ class UserFactory extends Factory
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Shop::class;
 
     /**
      * Define the model's default state.

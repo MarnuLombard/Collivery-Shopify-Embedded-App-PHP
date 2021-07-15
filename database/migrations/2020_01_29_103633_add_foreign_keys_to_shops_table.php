@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPasswordUpdatedAtToUsersTable extends Migration
+class AddForeignKeysToShopsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPasswordUpdatedAtToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->date('password_updated_at')->nullable();
+        Schema::table('shops', function (Blueprint $table) {
+            $table->foreign('plan_id')->references('id')->on('plans');
         });
     }
 
@@ -25,8 +25,8 @@ class AddPasswordUpdatedAtToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('password_updated_at');
+        Schema::table('shops', function (Blueprint $table) {
+            $table->dropForeign('shops_plan_id_foreign');
         });
     }
 }
