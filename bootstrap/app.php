@@ -43,6 +43,18 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Bootstrap any helpers
+|--------------------------------------------------------------------------
+|
+| Bootstrap any helper scripts that should be globally available
+| at any point in the programs execution
+|
+*/
+require_once __DIR__.'/helpers.php';
+
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
