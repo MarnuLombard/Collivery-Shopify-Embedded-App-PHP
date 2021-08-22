@@ -21,7 +21,7 @@ class ColliverySettingsCollectionCast implements CastsAttributes
             return ColliverySettingsCollection::fromDefault();
         }
 
-        $settings = json_decode($value, false, 3, JSON_THROW_ON_ERROR);
+        $settings = json_decode($value, false, 3, JSON_FORCE_OBJECT|JSON_THROW_ON_ERROR);
 
         return ColliverySettingsCollection::fromDatabase($settings);
     }
