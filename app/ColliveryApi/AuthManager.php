@@ -19,9 +19,9 @@ class AuthManager
     public function current(): ?AuthData
     {
         $authData = \Session::get(self::STORAGE_KEY);
-        if (!$authData && \Cache::has(self::STORAGE_KEY)) {
+        if (!$authData && \Cache::tags(self::STORAGE_KEY)->has($this->shop->id)) {
             // Session could have expired, let's retrieve from cache and set in session
-            $authData = \Cache::get(self::STORAGE_KEY);
+            $authData = \Cache::tags(self::STORAGE_KEY)->get($this->shop->id);
             \Session::put(self::STORAGE_KEY, $authData);
         }
 
