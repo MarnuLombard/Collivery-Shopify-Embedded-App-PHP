@@ -4,12 +4,12 @@ namespace ShopifyPlugin\ColliveryApi\Models;
 
 use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
 
-class LocationType
+class StatusTracking
 {
     use IsResponseComposable;
 
-    public int $id;
-    public string $name;
-    public bool $surcharge;
-    public int $surcharge_amount;
+    public int $status_id;
+    public string $status_name;
+    public int $waybill_id;
+    public string $created_at;
 }

@@ -2,6 +2,7 @@
 
 namespace ShopifyPlugin\ColliveryApi\Models;
 
+use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
 use ShopifyPlugin\Exceptions\PropertyDoesNotExist;
 use ShopifyPlugin\Models\Shop;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;

@@ -2,6 +2,8 @@
 
 namespace ShopifyPlugin\ColliveryApi\Models;
 
+use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
+
 class Client
 {
     use IsResponseComposable;
