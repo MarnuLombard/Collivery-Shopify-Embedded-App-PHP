@@ -6,7 +6,7 @@ import {ColliveryContext} from '../components/ColliveryProvider';
 import WaybillModal from '../components/WaybillModal';
 import RunGraphQL from '../components/RunGraphQL';
 import ResourceListWithWaybills from '../components/ResourceListWithWaybills';
-import urlCat from 'urlcat';
+import route from "../lib/Helpers/Route";
 import {Waybill} from "../types/Collivery/Waybill";
 
 type State = {
@@ -49,9 +49,8 @@ class Home extends Component<never, State> {
 
   handleSetSelectedWaybill(waybillId) {
     this.setState({selectedWaybill: waybillId});
-    const {pluginHost, routes, browserFetch, polarisApp} = this.context;
-    const shop = polarisApp.localOrigin;
-    const url = urlCat(pluginHost, `${routes.WaybillsShow}?shop=:shop`, {shop, id: waybillId});
+    const {browserFetch} = this.context;
+    const url = route('waybills.show', {id: waybillId});
     browserFetch(url, {headers: {accept: 'application/json'}, credentials: 'include'})
       .then(response => {
         const waybillData = response.data;
