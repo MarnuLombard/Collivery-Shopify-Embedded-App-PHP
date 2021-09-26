@@ -1,40 +1,32 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Collivery from "./pages/_app";
-import route from "./lib/Helpers/Route";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import Settings from "./pages/Settings";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Collivery from './pages/_app';
+import route from './lib/Helpers/Route';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Settings from './pages/Settings';
+import {Route, Switch} from 'react-router-dom';
 
 const apiKey = window.apiKey;
 const shop = window.shopOrigin;
 const pluginHost = window.pluginHost;
-const routesMap = new Map([
-  ['home', Home],
-  ['settings', Settings]
-]);
 
 const current = route().current();
 const element = document.getElementById('app');
 
-if (!routesMap.has(current)) {
-  ReactDOM.render(
-    <Collivery shop={shop} pluginHost={pluginHost}>
-      <NotFound current={current}/>
-    </Collivery>,
-    element
-  );
-} else {
-  // noinspection JSValidateTypes
-  /** @var {Component} component */
-  const ThisComponent = routesMap.get(current)
-
-  ReactDOM.render(
+ReactDOM.render(
     <Collivery apiKey={apiKey} shop={shop} pluginHost={pluginHost}>
-      <ThisComponent/>
+      <Switch>
+        <Route path="/" exact={true}>
+          <Home />
+        </Route>
+        <Route path="/settings">
+          <Settings />
+        </Route>
+        <Route path="*">
+          <NotFound current={current}/>
+        </Route>
+      </Switch>
     </Collivery>,
     element
-  );
-
-}
-
+);

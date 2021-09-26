@@ -1,9 +1,10 @@
 import {AppProvider} from '@shopify/polaris';
 import {Provider} from '@shopify/app-bridge-react';
 import React, {PropsWithChildren} from 'react';
+import {BrowserRouter} from 'react-router-dom';
 import Translations from '@shopify/polaris/locales/en.json';
 import ColliveryProvider from '../components/ColliveryProvider';
-import ClientRouter from "../components/ClientRouter";
+import Router from '../components/Router';
 import '../types/window';
 import {AppConfig} from "@shopify/app-bridge/client/types";
 
@@ -20,14 +21,16 @@ const Collivery: React.FC<Props>  = (props: PropsWithChildren<Props>): JSX.Eleme
 
   return (
     <React.Fragment>
-      <Provider config={shopifyConfig}>
-        <ClientRouter />
-        <AppProvider i18n={Translations}>
-          <ColliveryProvider pluginHost={pluginHost} shopifyApiKey={apiKey} shop={shop}>
-            {props.children}
-          </ColliveryProvider>
-        </AppProvider>
-      </Provider>
+      <BrowserRouter>
+        <Provider config={shopifyConfig}>
+          <AppProvider i18n={Translations}>
+            <ColliveryProvider pluginHost={pluginHost} shopifyApiKey={apiKey} shop={shop}>
+              {props.children}
+            </ColliveryProvider>
+            <Router />
+          </AppProvider>
+        </Provider>
+      </BrowserRouter>
     </React.Fragment>
   );
 }
