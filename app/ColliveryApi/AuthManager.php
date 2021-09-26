@@ -7,7 +7,7 @@ use ShopifyPlugin\Models\Shop;
 
 class AuthManager
 {
-    private const STORAGE_KEY = 'collivery_auth_data';
+    private const STORAGE_KEY = 'collivery_api:auth_data';
 
     private Shop $shop;
 
