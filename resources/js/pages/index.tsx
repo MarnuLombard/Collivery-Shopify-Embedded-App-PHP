@@ -3,7 +3,7 @@ import {TitleBar} from '@shopify/app-bridge-react';
 import * as React from 'react';
 import {Component} from 'react';
 import {ColliveryContext} from '../components/ColliveryProvider';
-import WaybillDetailsModal from '../components/WaybillDetailsModal';
+import WaybillModal from '../components/WaybillModal';
 import RunGraphQL from '../components/RunGraphQL';
 import ResourceListWithWaybills from '../components/ResourceListWithWaybills';
 import urlCat from 'urlcat';
@@ -34,7 +34,7 @@ class Index extends Component<never, State> {
           }}
         />
         <Layout>
-          <WaybillDetailsModal
+          <WaybillModal
             open={this.state.selectedWaybill !== null}
             waybillData={waybillData}
             handleModalClose={this.handleWaybillModalClose.bind(this)}/>
