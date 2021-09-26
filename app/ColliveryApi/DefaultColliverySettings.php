@@ -41,13 +41,32 @@ class DefaultColliverySettings
         return "Laravel $laravelVersion + Polaris $polarisVersion";
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function getAppVersion(): string
     {
         if (!$this->isProduction()) {
             return 'dev';
         }
 
-        return exec('git rev-parse --short=10 HEAD') ?: 'unknown';
+        $version = \Cache::remember(
+            'collivery_settings:app_version',
+            now()->addDay(),
+            fn () => exec(sprintf(
+                'git -C "%s" tag | tail -n 1',
+                base_path()
+            ))
+        );
+
+        if (!$version) {
+            throw new \InvalidArgumentException(sprintf(
+                "No version tag is defined in %s. Can't continue.",
+                base_path()
+            ));
+        }
+
+        return $version;
     }
 
     public function isProduction(): bool
