@@ -33,6 +33,7 @@
         "@shopify/app-bridge-react": "^2.0.3",
         "@shopify/app-bridge-utils": "^2.0.3",
         "@shopify/polaris": "^6.5.0",
+        "@shopify/polaris-icons": "^4.8.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-icons": "^4.2.0",
