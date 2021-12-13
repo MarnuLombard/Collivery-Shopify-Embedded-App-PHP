@@ -88,20 +88,16 @@ class ColliverySettingsCollection
     public function toArray(): array
     {
         return [
-            'user_name' => $this->userName,
+            'userName' => $this->userName,
             'password' => $this->password,
-            'risk_cover' => $this->riskCover,
-            'exclude_weekends' => $this->excludeWeekends,
+            'riskCover' => $this->riskCover,
+            'excludeWeekends' => $this->excludeWeekends,
             'rica' => $this->rica,
-            'consignee_only' => $this->consigneeOnly,
-            'sms_tracking' => $this->smsTracking,
+            'consigneeOnly' => $this->consigneeOnly,
+            'smsTracking' => $this->smsTracking,
             'discount' => $this->discount,
-            'free_shipping' => $this->freeShipping,
-            'free_shipping_minimum' => $this->freeShippingMinimum,
-            'app_version' => $this->appVersion,
-            'base_url' => $this->baseUrl,
-            'app_name' => $this->appName,
-            'app_host' => $this->appHost,
+            'freeShipping' => $this->freeShipping,
+            'freeShippingMinimum' => $this->freeShippingMinimum,
         ];
     }
 
