@@ -2,8 +2,6 @@
 
 namespace ShopifyPlugin\Exceptions;
 
-use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
-
-class ClassDoesNotExist extends ClassNotFoundError
+class ClassDoesNotExist extends \RuntimeException
 {
 }
