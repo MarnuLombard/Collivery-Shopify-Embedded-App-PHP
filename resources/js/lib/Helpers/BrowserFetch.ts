@@ -1,23 +1,16 @@
 import {authenticatedFetch} from "@shopify/app-bridge-utils";
 import {ClientApplication} from "@shopify/app-bridge";
 
-export type FetchInterface = (uri: RequestInfo, options?: RequestInit | undefined) => Promise<Response|null>;
+export type FetchInterface = (uri: RequestInfo, options?: RequestInit | undefined) => Promise<object|string|null>;
 
 const createBrowserFetch = (app: ClientApplication<any>, errorHandler: Function): FetchInterface => {
 
   return async (input: RequestInfo, init?: RequestInit) => {
     let response: Response;
     try {
-      response = await authenticatedFetch(app)(input, init);
+      setInitDefaults(init);
 
-      // if (response.headers.get(REAUTH_HEADER) === '1') {
-      //   const authUrlHeader = response.headers.get(REAUTH_URL_HEADER);
-      //
-      //   const redirect = Redirect.create(app);
-      //   redirect.dispatch(Redirect.Action.APP, authUrlHeader || Routes.Auth);
-      //
-      //   return null;
-      // }
+      response = await authenticatedFetch(app)(input, init);
 
       const contentType: string|null = response.headers.get('Content-Type');
       const isJson: boolean = typeof contentType == 'string'
@@ -49,5 +42,31 @@ const createBrowserFetch = (app: ClientApplication<any>, errorHandler: Function)
   };
 };
 
+const setInitDefaults = (init?: RequestInit) => {
+  init = init || {};
+
+  // Setup headers
+  let headers = init.headers;
+  if (typeof headers === 'undefined') {
+    headers = {};
+  }
+  // Take it from an `Object.entries()` style array into an assoc object
+  if (Array.isArray(headers)) {
+    headers = Object.fromEntries<string>(<Iterable<[string, string]>> headers);
+  }
+  // Just in case it's an object implementing `Headers` (a valid value of `init.headers`)
+  if (headers instanceof Headers) {
+    const headersMap = {};
+    headers.forEach((value: string, key: string) => headersMap[key] = value);
+
+    headers = headersMap;
+  }
+
+  headers.accept = headers.accept || 'application/json';
+  headers['content-type'] = headers['content-type'] || 'application/json';
+
+  init.headers = headers;
+  init.credentials = 'include';
+}
 
 export {createBrowserFetch};

@@ -50,8 +50,7 @@ class Home extends Component<never, State> {
   handleSetSelectedWaybill(waybillId) {
     this.setState({selectedWaybill: waybillId});
     const {browserFetch} = this.context;
-    const url = route('waybills.show', {id: waybillId});
-    browserFetch(url, {headers: {accept: 'application/json'}, credentials: 'include'})
+    browserFetch(route('waybills.show', {id: waybillId}))
       .then(response => {
         const waybillData = response.data;
         this.setState({waybillData});
