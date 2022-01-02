@@ -1,7 +1,7 @@
 import {ServiceTypeId, ServiceTypeName} from "./ServiceType";
 import {StatusId, StatusName} from "./Status";
 import {Parcel} from "./Parcel";
-import {LocationType} from "./LocationType";
+import {AddressType} from "./Address";
 
 export type Waybill = {
   id: number,
@@ -24,14 +24,7 @@ export type Waybill = {
   volumetric_weight: number,
   total_price: number,
   risk_cover: boolean,
-  delivery_address: {
-    id: number,
-    custom_id: string|null,
-    town_id: number,
-    suburb_id: number,
-    text: string,
-    short_text: string,
-    location_type: LocationType,
-  },
-  parcels: Parcel[]
+  parcels: Parcel[],
+  collection_address: AddressType,
+  delivery_address: AddressType,
 }

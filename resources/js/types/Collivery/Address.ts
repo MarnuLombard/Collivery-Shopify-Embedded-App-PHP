@@ -3,18 +3,14 @@ import {ProvinceCode, QuoteAddress} from "../Webhooks/QuoteAddress";
 import {ProvinceName} from "./Town";
 
 export type AddressType = {
+  id: number,
   custom_id?: string,
-  town_id?: number,
-  town_name: string,
+  town_id: number,
   suburb_id: number,
-  suburb_name?: string,
-  company_name?: string,
-  building?: string,
-  street_number?: string,
-  street: string,
-  location_type?: number,
-  location_type_name: string,
-  province?: ProvinceName,
+  text: string,
+  short_text: string,
+  location_type: LocationType,
+  geocode_data: GeocodeData
 }
 
 export class Address {

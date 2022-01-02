@@ -29,6 +29,7 @@ class Waybill
     public int $total_price;
     public bool $risk_cover;
     public Address $delivery_address;
+    public Address $collection_address;
     /** @var Parcel[] */
     public array $parcels;
 }

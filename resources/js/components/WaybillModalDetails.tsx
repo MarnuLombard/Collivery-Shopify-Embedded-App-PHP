@@ -11,6 +11,7 @@ class WaybillModalDetails extends React.Component<Props> {
     const {
       weight,
       volumetric_weight,
+      collection_address,
       delivery_address,
       parcel_count,
       service_type_name,
@@ -34,6 +35,10 @@ class WaybillModalDetails extends React.Component<Props> {
             {
               term: 'Custom info',
               description: this.customInfo,
+            },
+            {
+              term: 'Collection address',
+              description: collection_address ? collection_address.text : '',
             },
             {
               term: 'Delivery address',

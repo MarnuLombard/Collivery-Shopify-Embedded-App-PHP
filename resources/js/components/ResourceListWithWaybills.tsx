@@ -3,17 +3,10 @@ import React from 'react';
 import {ColliveryContext} from './ColliveryProvider';
 import route from "../lib/Helpers/Route";
 import {Waybill} from "../types/Collivery/Waybill";
-import {StatusName} from "../types/Collivery/Status";
 
-type StatusTracking = {
-  status_id: number,
-  status_name: StatusName,
-  waybill_id: number,
-  created_at: string, // "YYYY-MM-DD HH:mm:ss"
-};
 type Props = { handleModalOpen: Function };
 type State = {
-  waybills: StatusTracking[],
+  waybills: Waybill[],
   errorActive: boolean,
   errorText: null|string,
 };
@@ -28,7 +21,7 @@ class ResourceListWithWaybills extends React.Component<Props, State> {
   static contextType = ColliveryContext;
 
   render() {
-    const waybills = this.state.waybills as StatusTracking[];
+    const waybills = this.state.waybills;
     return (
       !waybills.length ?
         <p>Loading....</p> :
@@ -36,31 +29,33 @@ class ResourceListWithWaybills extends React.Component<Props, State> {
           <ResourceList
             showHeader
             resourceName={{singular: 'Waybill', plural: 'Waybills'}}
-            items={waybills}
+            items={waybills as Waybill[]}
             renderItem={
               item => {
                 const media =
                   <Thumbnail source={"https://collivery.net/img/collivery-icon.svg"} alt={"Waybill"} size={"small"}/>;
                 return (
                   <ResourceList.Item
-                    id={item.waybill_id.toString()}
-                    accessibilityLabel={`View details for ${item.waybill_id}`}
+                    id={item.id.toString()}
+                    accessibilityLabel={`View details for ${item.id}`}
                     media={media}
                     onClick={this.handleOnClick.bind(this)}
                   >
-                    <Stack>
+                    <Stack alignment="center">
                       <Stack.Item fill>
                         <h3>
                           <TextStyle variation="strong">
-                            {item.waybill_id}
+                            {item.id}
                           </TextStyle>
                         </h3>
+                        {item.custom_id ? `(${item.custom_id})` : null}
                       </Stack.Item>
                       <Stack.Item>
                         <p>{item.status_name}</p>
                       </Stack.Item>
                       <Stack.Item>
-                        <p>Last updated: {item.created_at}</p>
+                        <p>Collect after: {this.makeDateTimeString(item.collection_time)}</p>
+                        <p>Deliver before: {this.makeDateTimeString(item.delivery_time)}</p>
                       </Stack.Item>
                     </Stack>
                   </ResourceList.Item>
@@ -74,8 +69,7 @@ class ResourceListWithWaybills extends React.Component<Props, State> {
   componentDidMount() {
     const {polarisApp, browserFetch} = this.context;
     const shop = polarisApp.localOrigin;
-    const url = route('waybills.index', {shop});
-    browserFetch(url, {headers: {accept: 'application/json'}, credentials: 'include'})
+    browserFetch(route('waybills.index', {shop}))
       .then(response => {
         if (!response) {
           return this.context.triggerError("error");
@@ -88,6 +82,21 @@ class ResourceListWithWaybills extends React.Component<Props, State> {
   handleOnClick = (waybillId) => {
     this.props.handleModalOpen(waybillId);
   };
+
+  makeDateTimeString(timestamp: number): string {
+    return new Date(timestamp * 1000)
+        .toLocaleString('en-ZA', {
+          weekday: "short",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+          timeZone: 'Africa/Johannesburg',
+        }).replace(',', '');
+  }
 }
 
 export default ResourceListWithWaybills;
