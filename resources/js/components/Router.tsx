@@ -8,4 +8,4 @@ const Router: React.FC<RouterProps>  = (props: RouterProps): JSX.Element => {
   return <ClientRouter history={history}/>;
 };
 
-export default withRouter(ClientRouter);
+export default withRouter(Router);
