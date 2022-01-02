@@ -5,14 +5,14 @@ import {createApp} from "@shopify/app-bridge";
 import {createBrowserFetch, FetchInterface} from "../lib/Helpers/BrowserFetch";
 import {ClientApplication} from "@shopify/app-bridge/client/types";
 
-class MyContext {
-  pluginHost?: string;
-  triggerError?: Function;
-  triggerSuccess?: Function;
-  polarisApp?: ClientApplication<any>;
-  browserFetch?: FetchInterface;
+class TheContext {
+  pluginHost!: string;
+  triggerError!: Function;
+  triggerSuccess!: Function;
+  polarisApp!: ClientApplication<any>;
+  browserFetch!: FetchInterface;
 };
-const ColliveryContext = React.createContext(new MyContext());
+const ColliveryContext = React.createContext(new TheContext());
 type Props = {
   shopifyApiKey: string,
   shop: string,
@@ -21,6 +21,7 @@ type Props = {
 
 class ColliveryProvider extends React.Component<Props> {
   static contextType = Context;
+  context!: React.ContextType<typeof ColliveryContext>
 
   state = {
     criticalActive: false,
@@ -39,9 +40,9 @@ class ColliveryProvider extends React.Component<Props> {
     const polarisApp = createApp({apiKey: shopifyApiKey, host: btoa(shop), forceRedirect: true});
     const triggerSuccess = this.triggerSuccess.bind(this);
     const triggerError = this.triggerError.bind(this);
-    const browserFetch = createBrowserFetch(this.context, triggerError);
+    const browserFetch = createBrowserFetch(polarisApp, triggerError);
 
-    this.context.subscribe('collivery', data => {
+    polarisApp.subscribe('collivery', data => {
       console.log(data)
     });
 
