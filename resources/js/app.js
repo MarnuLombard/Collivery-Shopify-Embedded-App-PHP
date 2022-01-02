@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Collivery from './pages/_app';
+import App from './pages/_app';
 import route from './lib/Helpers/Route';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
@@ -15,7 +15,7 @@ const current = route().current();
 const element = document.getElementById('app');
 
 ReactDOM.render(
-    <Collivery apiKey={apiKey} shop={shop} pluginHost={pluginHost}>
+    <App apiKey={apiKey} shop={shop} pluginHost={pluginHost}>
       <Switch>
         <Route path="/" exact={true}>
           <Home />
@@ -27,6 +27,6 @@ ReactDOM.render(
           <NotFound current={current}/>
         </Route>
       </Switch>
-    </Collivery>,
+    </App>,
     element
 );

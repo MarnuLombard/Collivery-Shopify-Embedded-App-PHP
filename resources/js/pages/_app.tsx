@@ -10,7 +10,7 @@ import {AppConfig} from "@shopify/app-bridge/client/types";
 
 type Props = { shop: string, apiKey: string, pluginHost: string };
 
-const Collivery: React.FC<Props>  = (props: PropsWithChildren<Props>): JSX.Element => {
+const App: React.FC<Props>  = (props: PropsWithChildren<Props>): JSX.Element => {
   const { shop, apiKey, pluginHost }: Props = props;
 
   const shopifyConfig: AppConfig = {
@@ -35,4 +35,4 @@ const Collivery: React.FC<Props>  = (props: PropsWithChildren<Props>): JSX.Eleme
   );
 }
 
-export default Collivery;
+export default App;
