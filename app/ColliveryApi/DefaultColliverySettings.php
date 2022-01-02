@@ -83,8 +83,10 @@ class DefaultColliverySettings
         $method = 'get'.ucfirst($name);
 
         if (method_exists(self::class, $method)) {
+            $ttl = app()->environment('production') ? now()->addHours(12) : 5;
+
             return \Cache::tags('collivery_settings:default')
-                ->remember($name, now()->addHours(12), fn() => $this->{$method}());
+                ->remember($name, $ttl, fn() => $this->{$method}());
         }
 
         if (property_exists(self::class, $name)) {
