@@ -2,7 +2,7 @@ import {Modal} from '@shopify/polaris';
 import React from 'react';
 import {ColliveryContext} from './ColliveryProvider';
 import {Waybill} from "../types/Collivery/Waybill";
-import {ComplexAction} from "@shopify/polaris/dist/types/latest/src/types";
+import {ComplexAction} from "@shopify/polaris/build/ts/latest/src/types";
 import route from "../lib/Helpers/Route";
 import {NoteMajor} from '@shopify/polaris-icons';
 import WaybillModalDetails from "./WaybillModalDetails";
