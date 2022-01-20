@@ -59,7 +59,7 @@ class RegisterAsCarrierService implements ShouldQueue, ShouldBeUnique
             \Log::debug("Registered as carrier service with {$this->shop->name}", (array) $body);
             $this->shop->update(['carrier_service_registered' => 1]);
         } else {
-            \Log::debug("Error registering as carrier service with {$this->shop->name}", (array) $body);
+            \Log::error("Error registering as carrier service with {$this->shop->name}", (array) $body);
         }
     }
 }
