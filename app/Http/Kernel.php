@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use ShopifyPlugin\Http\Middleware\Authenticate;
+use ShopifyPlugin\Http\Middleware\CarrierServiceRegisteredMiddleware;
 use ShopifyPlugin\Http\Middleware\ColliveryAuthMiddleware;
 use ShopifyPlugin\Http\Middleware\ColliverySettingsMiddleware;
 use ShopifyPlugin\Http\Middleware\EncryptCookies;
@@ -85,7 +86,8 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-        'collivery.settings' => ColliverySettingsMiddleware::class,
         'collivery.auth' => ColliveryAuthMiddleware::class,
+        'collivery.carrier_service' => CarrierServiceRegisteredMiddleware::class,
+        'collivery.settings' => ColliverySettingsMiddleware::class,
     ];
 }

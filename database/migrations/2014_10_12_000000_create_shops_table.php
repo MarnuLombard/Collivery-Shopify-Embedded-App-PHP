@@ -21,6 +21,7 @@ class CreateShopsTable extends Migration
             $table->string('password');
             $table->date('password_updated_at')->nullable();
             $table->rememberToken();
+            $table->boolean('carrier_service_registered')->default(false);
             $table->boolean('shopify_grandfathered')->default(false);
             $table->string('shopify_namespace')->nullable(true)->default(null);
             $table->boolean('shopify_freemium')->default(false);

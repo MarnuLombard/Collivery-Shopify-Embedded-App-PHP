@@ -17,6 +17,7 @@ use Osiset\ShopifyApp\Traits\ShopModel;
  * @property Carbon                 $email_verified_at
  * @property string                 $password
  * @property string                 $remember_token
+ * @property bool                   $carrier_service_registered
  * @property Carbon                 $created_at
  * @property Carbon                 $updated_at
  * @property Carbon                 $deleted_at

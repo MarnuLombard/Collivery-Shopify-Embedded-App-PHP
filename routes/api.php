@@ -1,19 +1,16 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use ShopifyPlugin\Http\Controllers\SettingsController;
+use ShopifyPlugin\Http\Controllers\WaybillController;
+use ShopifyPlugin\Http\Controllers\WaybillImageController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['verify.shopify', 'collivery.auth', 'collivery.carrier_service', 'collivery.settings'])->group(function () {
+    Route::resource('/waybills', WaybillController::class)
+        ->only(['index', 'show', 'store']);
+    Route::get('/waybills/image/{waybill}', WaybillImageController::class.'@show')
+        ->name('waybills.image.show');
+    Route::resource('/settings',  SettingsController::class)
+        ->only(['index', 'store']);
 });
+
