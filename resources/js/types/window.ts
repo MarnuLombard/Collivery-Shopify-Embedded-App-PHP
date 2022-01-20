@@ -1,8 +1,6 @@
 import route from "../lib/Helpers/Route";
-import Utils from '@shopify/app-bridge-utils';
+import * as Utils from '@shopify/app-bridge-utils';
 import {ClientApplication} from "@shopify/app-bridge/client/types";
-import AppBridge from "@shopify/app-bridge";
-import Actions from '@shopify/app-bridge/actions';
 
 declare global {
   interface Window {
@@ -11,9 +9,7 @@ declare global {
     pluginHost: string,
     route: typeof route,
     app: ClientApplication<any>,
-    utils: typeof Utils,
-    AppBridge: typeof AppBridge,
-    Actions: typeof Actions
+    utils: Utils.AuthorizedFetchOptions
   }
 }
 

@@ -1,7 +1,7 @@
 @extends('shopify-app::layouts.default')
 @section('styles')
   @parent
-
+  <script src="https://mds-integrated-test.collivery.co.za:8097"></script>
   <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 @endsection
 
@@ -13,12 +13,12 @@
   @parent
 
   <script>
-    actions.TitleBar.create(app, { title: 'Welcome' });
-  </script>
-  <script>
     var pluginHost = "{{ config('app.domain') }}";
     var apiKey = "{{ \Osiset\ShopifyApp\Util::getShopifyConfig('api_key', $shopDomain ?? $user->name ) }}";
     var shopOrigin = "{{ $shopDomain ?? $user->name }}";
   </script>
   <script src="{{ mix('/js/app.js') }}"></script>
+  <script>
+    actions.TitleBar.create(app, { title: 'Welcome' });
+  </script>
 @endsection
