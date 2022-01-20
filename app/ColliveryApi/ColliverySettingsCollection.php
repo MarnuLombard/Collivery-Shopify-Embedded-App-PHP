@@ -28,6 +28,7 @@ class ColliverySettingsCollection
     private string $appName;
     private string $appHost;
 
+    /** @noinspection UnusedConstructorDependenciesInspection */
     public function __construct()
     {
         // These are not user-configurable and are not saved in DB

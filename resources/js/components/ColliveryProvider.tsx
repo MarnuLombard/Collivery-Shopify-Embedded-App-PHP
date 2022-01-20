@@ -5,14 +5,14 @@ import {createApp} from "@shopify/app-bridge";
 import {createBrowserFetch, FetchInterface} from "../lib/Helpers/BrowserFetch";
 import {ClientApplication} from "@shopify/app-bridge/client/types";
 
-class TheContext {
+class MyContext {
   pluginHost!: string;
   triggerError!: Function;
   triggerSuccess!: Function;
   polarisApp!: ClientApplication<any>;
   browserFetch!: FetchInterface;
 };
-const ColliveryContext = React.createContext(new TheContext());
+const ColliveryContext = React.createContext(new MyContext());
 type Props = {
   shopifyApiKey: string,
   shop: string,
