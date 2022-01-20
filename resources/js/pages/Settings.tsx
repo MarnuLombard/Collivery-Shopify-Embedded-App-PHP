@@ -1,20 +1,21 @@
 import React, {Component} from 'react';
 import {Banner, Button, Checkbox, Form, FormLayout, Layout, Page, RadioButton, Stack, TextField,} from '@shopify/polaris';
+import {Toast} from '@shopify/app-bridge/actions';
 import {ColliveryContext} from '../components/ColliveryProvider';
 import {SaveMinor} from '@shopify/polaris-icons'
 import route from "../lib/Helpers/Route";
 
 type State = {
-  userName?: string,
-  password?: string,
-  riskCover?: string,
-  excludeWeekends?: string,
-  rica?: string,
-  consigneeOnly?: string,
-  smsTracking?: string,
-  discount: string,
-  freeShipping?: string,
-  freeShippingMinimum?: string,
+  userName: string,
+  password: string,
+  riskCover: boolean,
+  excludeWeekends: boolean,
+  rica: boolean,
+  consigneeOnly: boolean,
+  smsTracking: boolean,
+  discount: number,
+  freeShipping: boolean,
+  freeShippingMinimum: number,
   loading: boolean,
   successActive: boolean,
   errorActive: boolean,
@@ -25,16 +26,16 @@ class Settings extends Component<any, State> {
   context!: React.ContextType<typeof ColliveryContext>
 
   state = {
-    userName: undefined,
-    password: undefined,
-    riskCover: undefined,
-    excludeWeekends: undefined,
-    rica: undefined,
-    consigneeOnly: undefined,
-    smsTracking: undefined,
-    discount: '0',
-    freeShipping: undefined,
-    freeShippingMinimum: undefined,
+    userName: '',
+    password: '',
+    riskCover: false,
+    excludeWeekends: false,
+    rica: false,
+    consigneeOnly: false,
+    smsTracking: false,
+    discount: 0,
+    freeShipping: false,
+    freeShippingMinimum: 0,
     loading: false,
     successActive: false,
     errorActive: false,
@@ -61,8 +62,12 @@ class Settings extends Component<any, State> {
   }
 
   validateFreeShippingMinimum(freeShippingMinimum: string | number | undefined): string| undefined {
+    if (!this.state.freeShipping) {
+      return undefined;
+    }
+
     return Number(freeShippingMinimum) === NaN
-    || Number(freeShippingMinimum) > 0
+    || Number(freeShippingMinimum) <= 0
         ? 'Must be a positive number greater than 0'
         : undefined;
   }
@@ -94,7 +99,7 @@ class Settings extends Component<any, State> {
         return false;
       }
 
-      const {triggerSuccess, triggerError, browserFetch} = this.context;
+      const {triggerError, browserFetch} = this.context;
       const url = route('settings.store');
       this.setState({loading: true});
       browserFetch(url, {
@@ -105,7 +110,11 @@ class Settings extends Component<any, State> {
       })
       // @ts-ignore
       .then(response => this.setState(response.data))
-      .then(triggerSuccess('Settings saved'))
+      .then(() => {
+        Toast
+            .create(window.app, {message: 'Settings saved', duration: 5000})
+            .dispatch(Toast.Action.SHOW);
+    })
       .catch(e => triggerError(e.message || 'Error saving settings.'))
       .finally(() => {
         this.setState({loading: false});
@@ -114,7 +123,7 @@ class Settings extends Component<any, State> {
 
     const handleToggle = (field: keyof State) => {
       // @ts-ignore
-      return () => this.setState({[field] : true});
+      return () => this.setState({[field] : !this.state[field]});
     };
 
     return (
@@ -165,24 +174,16 @@ class Settings extends Component<any, State> {
 
             <Layout.Section>
             <Stack vertical>
-              <RadioButton
-                label="Risk cover enabled"
-                helpText={(<span>All waybills will include a risk cover for R10,000. Subject to our <a target="_blank" href="https://collivery.net/terms">terms and conditions</a>. Surcharges will be applied.</span>)}
+              <Checkbox
+                label={"Risk-cover enabled"}
                 checked={riskCover}
-                id="risk_cover_on"
-                name="risk_cover"
+                helpText={(
+                  riskCover ?
+                    <span>All waybills will include a risk cover for R10,000. Subject to our <a target="_blank" href="https://collivery.net/terms">terms and conditions</a>. Surcharges will be applied.</span> :
+                    <span>Only the default risk cover of up to R1,000 only. Subject to our <a target="_blank" href="https://collivery.net/terms">terms and conditions</a>.</span>
+                )}
                 onChange={handleToggle('riskCover')}
-                value="1"
-              />
-              <RadioButton
-                label="Risk cover disabled"
-                helpText={(<span>Only the default risk cover of up to R1,000 only. Subject to our <a target="_blank" href="https://collivery.net/terms">terms and conditions</a>.</span>)}
-                id="risk_cover_off"
-                name="risk_cover"
-                checked={!riskCover}
-                onChange={handleToggle('riskCover')}
-                value="0"
-              />
+                />
             </Stack>
             </Layout.Section>
 
@@ -304,8 +305,16 @@ class Settings extends Component<any, State> {
       }
 
       // @ts-ignore
-      this.setState(response.data);
-      console.info('Server settings:', response)
+      const updatedState: null|State = response?.data;
+      if (updatedState) {
+        for (const [key, value] of Object.entries(updatedState)) {
+          this.setState({[key] : value} as State);
+        }
+        console.log('Updated Server settings:');
+        console.table(updatedState);
+      } else {
+        console.warn('Empty Server Settings!')
+      }
 
     });
   }
