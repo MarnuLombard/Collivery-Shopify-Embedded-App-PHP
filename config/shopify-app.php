@@ -83,7 +83,7 @@ return [
     | is done in autoload and does not need to be changed unless required.
     |
     */
-    'job_namespace' => env('SHOPIFY_JOB_NAMESPACE', '\\App\\Jobs\\'),
+    'job_namespace' => env('SHOPIFY_JOB_NAMESPACE', '\\ShopifyPlugin\\Webhooks\\'),
 
     /*
     |--------------------------------------------------------------------------
