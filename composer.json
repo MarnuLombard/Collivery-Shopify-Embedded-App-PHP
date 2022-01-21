@@ -3,7 +3,7 @@
     "description": "MDS Collivery Shipping App for Shopify",
     "type": "project",
     "require": {
-        "php": "^7.4|^8.0",
+        "php":"^8.0",
         "ext-imagick": "*",
         "ext-json": "*",
         "fideloper/proxy": "^4.4",

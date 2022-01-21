@@ -4,7 +4,8 @@ namespace ShopifyPlugin\ShopifyApi\Models;
 
 use Spatie\DataTransferObject\DataTransferObject;
 
-class QuoteRequest extends DataTransferObject
+class Receipt extends DataTransferObject
 {
-    public Rate $rate;
+    public bool $testcase = false;
+    public string $authorization;
 }
