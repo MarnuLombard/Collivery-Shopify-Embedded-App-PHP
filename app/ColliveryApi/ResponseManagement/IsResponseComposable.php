@@ -82,6 +82,6 @@ trait IsResponseComposable
     {
         $data = array_map(fn ($datum) => static::fromResponse($datum), $response->data);
 
-        return new ColliveryResponseCollection($data, $response->links, $response->meta);
+        return new ColliveryResponseCollection($data, $response->links ?? null, $response->meta ?? null);
     }
 }

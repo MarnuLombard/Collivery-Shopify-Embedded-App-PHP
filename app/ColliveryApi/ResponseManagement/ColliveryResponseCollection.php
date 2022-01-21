@@ -15,7 +15,7 @@ class ColliveryResponseCollection implements Arrayable
     /**
      * @param IsResponseComposable[]     $data
      */
-    public function __construct(array $data, \stdClass $links, \stdClass $meta)
+    public function __construct(array $data, ?\stdClass $links, ?\stdClass $meta)
     {
         if (count($data) > 0) {
             $classUses = class_uses(head($data));
@@ -29,6 +29,9 @@ class ColliveryResponseCollection implements Arrayable
                 ));
             }
         }
+
+        $links = $links ?: new \stdClass();
+        $meta = $meta ?: new \stdClass();
 
         $this->data = collect($data);
         $this->links = new Links($links);
