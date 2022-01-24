@@ -2,14 +2,14 @@
 
 namespace ShopifyPlugin\ShopifyApi\Models;
 
-use Spatie\DataTransferObject\DataTransferObject;
-use Spatie\DataTransferObject\Exceptions\ValidationException;
 
-class Province extends DataTransferObject
+use Illuminate\Validation\ValidationException;
+
+class Province
 {
     public const EASTERN_CAPE = 'EC';
     public const FREE_STATE = 'FS';
-    public const GAUTENG = 'GT';
+    public const GAUTENG = 'GP';
     public const KWAZULU_NATAL = 'NL';
     public const LIMPOPO = 'LP';
     public const MPUMALANGA = 'MP';
@@ -46,12 +46,10 @@ class Province extends DataTransferObject
     /**
      * @throws ValidationException
      */
-    public function __construct(...$args)
+    public function __construct(string $code)
     {
-        $code = reset($args);
-
         if (!in_array($code, self::$codes)) {
-            throw new ValidationException($this, ['code' => $code.' is not a valid province code.']);
+            throw ValidationException::withMessages(['code' => $code.' is not a valid province code.']);
         }
 
         $this->code = $code;
