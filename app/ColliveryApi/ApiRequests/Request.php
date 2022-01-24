@@ -39,7 +39,7 @@ class Request
             );
         }
 
-        return AuthData::fromResponse($responseData->object());
+        return AuthData::fromResponse($responseData->object(), $this->colliverySettings->shop);
     }
 
     protected function getRequest(): PendingRequest

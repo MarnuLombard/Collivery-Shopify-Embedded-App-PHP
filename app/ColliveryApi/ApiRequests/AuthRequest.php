@@ -21,6 +21,6 @@ class AuthRequest extends ApiRequest
             'password' => $settings->password,
         ];
 
-        return AuthData::fromResponse($this->post('/login', $data));
+        return AuthData::fromResponse($this->post('/login', $data), $this->colliverySettings->shop);
     }
 }
