@@ -3,9 +3,11 @@
 namespace ShopifyPlugin\ColliveryApi\InputData;
 
 use Illuminate\Contracts\Support\Arrayable;
-use ShopifyPlugin\ColliveryApi\Models\Address;
+use Illuminate\Validation\ValidationException;
+use ShopifyPlugin\ColliveryApi\Models\AuthData;
 use ShopifyPlugin\ColliveryApi\Models\LocationType;
-use ShopifyPlugin\ShopifyApi\Models\BaseAddress;
+use ShopifyPlugin\ShopifyApi\Models\Order;
+use ShopifyPlugin\ShopifyApi\Models\Province;
 use ShopifyPlugin\ShopifyApi\Models\QuoteAddress;
 
 class AddressInput implements Arrayable
@@ -19,11 +21,15 @@ class AddressInput implements Arrayable
     private string $street;
     private int $location_type;
     private ?string $province = null;
+    public ContactInput $contact;
 
+    /**
+     * @throws ValidationException
+     */
     public static function fromShopifyQuoteAddress(QuoteAddress $quoteAddress): self
     {
         $address = new self();
-        $address->province = $quoteAddress->province->name;
+        $address->province = (new Province($quoteAddress->province))->name;
         $address->town_name = $quoteAddress->city;
         $address->suburb_name = $quoteAddress->address3
             ?: $quoteAddress->address2
@@ -33,30 +39,37 @@ class AddressInput implements Arrayable
         $address->street = $quoteAddress->address1;
         $address->location_type = LocationType::BUSINESS_PREMISES;
 
+        $address->contact = ContactInput::fromShopifyQuoteAddress($quoteAddress);
+
         return $address;
     }
 
-    public static function fromShopifyBaseAddress(BaseAddress $baseAddress): self
+    public static function fromShopifyOrder(Order $order): self
     {
         $address = new self();
+        $baseAddress = $order->shipping_address;
         $address->town_name = $baseAddress->city;
         $address->suburb_name = $baseAddress->address2 ?: $baseAddress->city;
         $address->building = $baseAddress->address2;
         $address->street = $baseAddress->address1;
         $address->location_type = LocationType::BUSINESS_PREMISES;
+        $address->contact = ContactInput::fromShopifyOrder($order);
 
         return $address;
     }
 
-    public static function fromColliveryDefaultAddress(Address $defaultAddress): self
+    public static function fromColliveryAuthData(AuthData $authData): AddressInput
     {
+        $defaultAddress = $authData->client->primary_address;
         $address = new self();
+
         $address->town_id = $defaultAddress->town_id;
         $address->suburb_id = $defaultAddress->suburb_id;
         $address->location_type = $defaultAddress->location_type->id;
         $address->company_name = $defaultAddress->company_name;
         $address->building = $defaultAddress->building_complex_name;
         $address->street = trim("$defaultAddress->street_number $defaultAddress->street_name" ?: $defaultAddress->short_text);
+        $address->contact = ContactInput::fromColliveryAuthData($authData);
 
         return $address;
     }

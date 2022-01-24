@@ -3,6 +3,7 @@
 namespace ShopifyPlugin\ColliveryApi\InputData;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
 use ShopifyPlugin\ColliveryApi\AuthManager;
 use ShopifyPlugin\ColliveryApi\Models\WaybillService;
@@ -10,7 +11,6 @@ use ShopifyPlugin\Models\ColliverySettings;
 use ShopifyPlugin\ShopifyApi\Models\LineItem;
 use ShopifyPlugin\ShopifyApi\Models\Order;
 use ShopifyPlugin\ShopifyApi\Models\QuoteRequest;
-use ShopifyPlugin\ShopifyApi\Models\ShippingLine;
 
 class QuoteInput implements Arrayable
 {
@@ -28,8 +28,13 @@ class QuoteInput implements Arrayable
     public bool $sms_tracking;
 
     public function __construct(public ColliverySettings $colliverySettings)
-    {}
+    {
+        $this->injectSettings();
+    }
 
+    /**
+     * @throws ValidationException
+     */
     public function fromQuoteRequest(QuoteRequest $quoteRequest): static
     {
         $this->service_ids = [
@@ -38,8 +43,7 @@ class QuoteInput implements Arrayable
             WaybillService::ECONOMY,
         ];
         $averageParcelDimension = 20;
-        $this->parcels = array_map(fn(ShippingLine $item, int $index) => [
-            'parcel_number' => $index + 1,
+        $this->parcels = array_map(fn(LineItem $item) => [
             'length' => $averageParcelDimension,
             'width' => $averageParcelDimension,
             'height' => $averageParcelDimension,
@@ -47,17 +51,11 @@ class QuoteInput implements Arrayable
             'quantity' => $item->quantity,
         ], $quoteRequest->rate->items);
 
-
-        $clientAddress = (new AuthManager($this->colliverySettings->shop))
-            ->current()
-            ->client
-            ->primary_address;
-        $this->collection_address = AddressInput::fromColliveryDefaultAddress($clientAddress);
+        $authData = (new AuthManager($this->colliverySettings->shop))->current();
+        $this->collection_address = AddressInput::fromColliveryAuthData($authData);
 
         $destination = $quoteRequest->rate->destination;
         $this->delivery_address = AddressInput::fromShopifyQuoteAddress($destination);
-
-        $this->injectSettings();
 
         return $this;
     }
@@ -79,15 +77,9 @@ class QuoteInput implements Arrayable
         ], $order->line_items);
 
 
-        $clientAddress = (new AuthManager($this->colliverySettings->shop))
-            ->current()
-            ->client
-            ->primary_address;
-        $this->collection_address = AddressInput::fromColliveryDefaultAddress($clientAddress);
-
-        $this->delivery_address = AddressInput::fromShopifyBaseAddress($order->shipping_address);
-
-        $this->injectSettings();
+        $authData = (new AuthManager($this->colliverySettings->shop))->current();
+        $this->collection_address = AddressInput::fromColliveryAuthData($authData);
+        $this->delivery_address = AddressInput::fromShopifyOrder($order);
 
         return $this;
     }

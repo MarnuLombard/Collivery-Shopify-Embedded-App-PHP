@@ -40,7 +40,7 @@ class RegisterAsCarrierService implements ShouldQueue, ShouldBeUnique
         $carrierServiceData = tap(
             self::CARRIER_SERVICE_DATA,
             function (array &$data) {
-                $data['callback_url'] = route('webhook', ['type' => 'shipping_quote']);
+                $data['callback_url'] = route('shipping-quote');
 
                 return $data;
             });
