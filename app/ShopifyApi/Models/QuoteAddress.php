@@ -9,6 +9,6 @@ class QuoteAddress extends BaseAddress
     public ?string $company_name = null;
     public ?string $email;
     public ?string $fax = null;
-    public Province $province;
+    public string $province;
     public int $postal_code;
 }

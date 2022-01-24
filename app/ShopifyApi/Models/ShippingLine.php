@@ -9,7 +9,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class ShippingLine extends DataTransferObject
 {
-    public int $id;
+    public ?int $id;
     public ?string $carrier_identifier = null;
     public string $code;
     public $delivery_category;
