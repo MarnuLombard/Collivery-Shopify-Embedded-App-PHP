@@ -1,17 +1,12 @@
 export default class ShippingRate {
-  /** @type {String */
-  service_name;
-  /** @type {String} */
-  service_code;
-  /** @type {Number} */
-  total_price;
-  /** @type {String} */
+  service_name!: string;
+  service_code!: string;
+  total_price!: number;
+  min_delivery_date!: string;
+  max_delivery_date!: string;
   currency = 'ZAR';
-  /** @type {String} */
-  min_delivery_date;
-  /** @type {String} */
-  max_delivery_date;
 
-  constructor() {
+  constructor(props: Record<keyof ShippingRate, any>) {
+    Object.assign(this, props);
   }
 }

@@ -1,30 +1,16 @@
 export default class LineItem {
-  /** @type {Number} */
-  id;
-  /** @type {String} */
-  title;
-  /** @type {Number} */
-  quantity;
-  /** @type {String} */
-  variant_title;
-  /** @type {String} */
-  fulfillment_service;
-  /** @type {Number} */
-  product_id;
-  /** @type {Boolean} */
-  requires_shipping;
-  /** @type {String} */
-  name;
-  /** @type {Number} */
-  fulfillable_quantity;
-  /** @type {Number} */
-  grams;
-  /** @type {String} */
-  price;
-  /** @type {String} */
-  total_discount;
-  /** @type {String|Undefined} */
-  fulfillment_status;
-  /** @type {String} */
-  admin_graphql_api_id;
+  id!: number;
+  title!: string;
+  quantity!: number;
+  variant_title!: string;
+  fulfillment_service!: string;
+  product_id!: number;
+  requires_shipping!: boolean;
+  name!: string;
+  fulfillable_quantity!: number;
+  grams!: number;
+  price!: string;
+  total_discount!: string;
+  fulfillment_status?: string;
+  admin_graphql_api_id!: string;
 }
