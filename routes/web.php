@@ -12,6 +12,8 @@ Route::middleware(['verify.shopify', 'collivery.auth', 'collivery.carrier_servic
         Route::get('/orders/process', HomeController::class)->name('orders.process');
     });
 
-Route::post('shipping-quote', ShippingQuoteController::class)->name('shipping-quote');
+Route::middleware(['auth.webhook'])
+    ->group(function () {
+        Route::post('shipping-quote', ShippingQuoteController::class)->name('shipping-quote');
+    });
 
-Route::fallback(HomeController::class)->name('fallback');
