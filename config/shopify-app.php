@@ -328,7 +328,7 @@ return [
         [
             'src'           => env(
                 'SHOPIFY_SCRIPTTAG_1_SRC',
-                env('APP_URL') . e(mix('/js/app.js'))
+                e(mix('/js/app.js'))
             ),
             'event'         => env('SHOPIFY_SCRIPTTAG_1_EVENT', 'onload'),
             'display_scope' => env('SHOPIFY_SCRIPTTAG_1_DISPLAY_SCOPE', 'online_store'),
