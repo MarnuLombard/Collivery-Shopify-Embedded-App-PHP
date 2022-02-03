@@ -20,7 +20,7 @@ class RegisterAsCarrierService implements ShouldQueue, ShouldBeUnique
     private const CARRIER_SERVICE_DATA = [
         "name" => "Shipping Rate Provider",
         "callback_url" => "",
-        "service_discovery" => true
+        "service_discovery" => true,
     ];
 
     use Dispatchable;
@@ -56,10 +56,13 @@ class RegisterAsCarrierService implements ShouldQueue, ShouldBeUnique
         );
 
         if ($status >= 200 && $status < 300) {
-            \Log::debug("Registered as carrier service with {$this->shop->name}", (array) $body);
+            \Log::debug("Registered as carrier service with {$this->shop->name}", (array)$body);
             $this->shop->update(['carrier_service_registered' => 1]);
         } else {
-            \Log::error("Error registering as carrier service with {$this->shop->name}", (array) $body);
+            if (\Arr::get($body, 'base.0') === 'Shipping Rate Provider is already configured') {
+                $this->shop->update(['carrier_service_registered' => 1]);
+            }
+            \Log::error("Error registering as carrier service with {$this->shop->name}", (array)$body);
         }
     }
 }
