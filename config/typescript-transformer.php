@@ -1,5 +1,14 @@
 <?php
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use ShopifyPlugin\Services\Typescript\Formatters\PrettierRelativeFormatter;
+use ShopifyPlugin\Services\Typescript\Transformers\ConstantsToEnumTransformer;
+use Spatie\LaravelTypeScriptTransformer\Transformers\SpatieStateTransformer;
+use Spatie\TypeScriptTransformer\Collectors\DefaultCollector;
+use Spatie\TypeScriptTransformer\Transformers\DtoTransformer;
+use Spatie\TypeScriptTransformer\Writers\TypeDefinitionWriter;
+
 return [
     /*
      * The paths where typescript-transformer will look for PHP classes
@@ -20,7 +29,7 @@ return [
      */
 
     'collectors' => [
-        Spatie\TypeScriptTransformer\Collectors\DefaultCollector::class,
+        DefaultCollector::class,
     ],
 
     /*
@@ -29,10 +38,10 @@ return [
      */
 
     'transformers' => [
-        Spatie\LaravelTypeScriptTransformer\Transformers\SpatieStateTransformer::class,
-        //        Spatie\TypeScriptTransformer\Transformers\SpatieEnumTransformer::class,
-        Spatie\TypeScriptTransformer\Transformers\DtoTransformer::class,
-        ShopifyPlugin\Services\TypescriptTransformers\ConstantsToEnumTransformer::class,
+        SpatieStateTransformer::class,
+        //        \Spatie\TypeScriptTransformer\Transformers\SpatieEnumTransformer::class,
+        DtoTransformer::class,
+        ConstantsToEnumTransformer::class,
     ],
 
     /*
@@ -42,10 +51,10 @@ return [
      */
 
     'default_type_replacements' => [
-        DateTime::class => 'string',
-        DateTimeImmutable::class => 'string',
-        Carbon\CarbonImmutable::class => 'string',
-        Carbon\Carbon::class => 'string',
+        \DateTime::class => 'string',
+        \DateTimeImmutable::class => 'string',
+        CarbonImmutable::class => 'string',
+        Carbon::class => 'string',
     ],
 
     /*
@@ -60,7 +69,7 @@ return [
      * But you can also use the `ModuleWriter` or implement your own.
      */
 
-    'writer' => Spatie\TypeScriptTransformer\Writers\TypeDefinitionWriter::class,
+    'writer' => TypeDefinitionWriter::class,
 
     /*
      * The generated TypeScript file can be formatted. We ship a Prettier formatter
@@ -68,7 +77,7 @@ return [
      * The generated TypeScript will not be formatted when no formatter was set.
      */
 
-    'formatter' => null,
+    'formatter' => PrettierRelativeFormatter::class,
 
     /*
      * Enums can be transformed into types or native TypeScript enums, by default

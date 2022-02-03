@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopifyPlugin\Services\TypescriptTransformers;
+namespace ShopifyPlugin\Services\Typescript\Transformers;
 
 use Spatie\TypeScriptTransformer\Structures\TransformedType;
 use Spatie\TypeScriptTransformer\Transformers\Transformer;

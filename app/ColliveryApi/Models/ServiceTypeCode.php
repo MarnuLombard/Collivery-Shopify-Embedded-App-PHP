@@ -2,7 +2,7 @@
 
 namespace ShopifyPlugin\ColliveryApi\Models;
 
-use ShopifyPlugin\Services\TypescriptTransformers\ConstantsToEnumTransformer;
+use ShopifyPlugin\Services\Typescript\Transformers\ConstantsToEnumTransformer;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\TypeScriptTransformer;
 
