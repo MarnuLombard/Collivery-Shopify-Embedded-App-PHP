@@ -5,7 +5,7 @@ import {ColliveryContext} from '../components/ColliveryProvider';
 import {SaveMinor} from '@shopify/polaris-icons';
 import route from '../lib/Helpers/Route';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
-import {ResponseData} from '../types/Collivery/ResponseCollection';
+import {ResponseData} from '../types/Collivery/Responses';
 import {BooleanSettings, OtherSettings, Settings as SettingsType} from '../types/Collivery/Settings';
 
 type State = SettingsType;

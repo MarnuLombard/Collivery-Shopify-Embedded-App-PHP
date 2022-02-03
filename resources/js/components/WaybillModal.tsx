@@ -7,7 +7,7 @@ import {NoteMajor} from '@shopify/polaris-icons';
 import WaybillModalDetails from './WaybillModalDetails';
 import WaybillModalImage from './WaybillModalImage';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
-import {ResponseData} from '../types/Collivery/ResponseCollection';
+import {ResponseData} from '../types/Collivery/Responses';
 import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {

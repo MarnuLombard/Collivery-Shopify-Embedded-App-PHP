@@ -8,7 +8,7 @@ import RunGraphQL from '../components/RunGraphQL';
 import ResourceListWithWaybills from '../components/ResourceListWithWaybills';
 import route from '../lib/Helpers/Route';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
-import {ResponseData} from '../types/Collivery/ResponseCollection';
+import {ResponseData} from '../types/Collivery/Responses';
 import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type State = {

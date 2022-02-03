@@ -4,7 +4,7 @@ import {ColliveryContext, MyContext} from './ColliveryProvider';
 import route from '../lib/Helpers/Route';
 import {ClientApplication} from '@shopify/app-bridge/client/types';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
-import {ResponseCollection} from '../types/Collivery/ResponseCollection';
+import {ResponseCollection} from '../types/Collivery/Responses';
 import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {
