@@ -2,30 +2,19 @@ import React, {Component, ReactNode} from 'react';
 import {Banner, Button, Checkbox, Form, FormLayout, Layout, Page, RadioButton, Stack, TextField} from '@shopify/polaris';
 import {Toast} from '@shopify/app-bridge/actions';
 import {ColliveryContext} from '../components/ColliveryProvider';
-import {SaveMinor} from '@shopify/polaris-icons'
-import route from "../lib/Helpers/Route";
+import {SaveMinor} from '@shopify/polaris-icons';
+import route from '../lib/Helpers/Route';
+import {FetchInterface} from '../lib/Helpers/BrowserFetch';
+import {ResponseData} from '../types/Collivery/ResponseCollection';
+import {BooleanSettings, OtherSettings, Settings as SettingsType} from '../types/Collivery/Settings';
 
-type State = {
-  userName: string,
-  password: string,
-  riskCover: boolean,
-  excludeWeekends: boolean,
-  rica: boolean,
-  consigneeOnly: boolean,
-  smsTracking: boolean,
-  discount: number,
-  freeShipping: boolean,
-  freeShippingMinimum: number,
-  loading: boolean,
-  successActive: boolean,
-  errorActive: boolean,
-};
+type State = SettingsType;
 
 class Settings extends Component<any, State> {
   static contextType = ColliveryContext;
   context!: React.ContextType<typeof ColliveryContext>;
 
-  state = {
+  state: SettingsType = {
     userName: '',
     password: '',
     riskCover: false,
@@ -47,17 +36,15 @@ class Settings extends Component<any, State> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(value: string, id: string): void {
-    // @ts-ignore
-    this.setState({[id]: value});
-  };
-
+  handleChange(value: string, id: keyof OtherSettings): void {
+    this.setState({[id]: value} as unknown as SettingsType);
+  }
 
   validateDiscount(discount: string | number | undefined): string | undefined {
     return isNaN(Number(discount)) || Number(discount) < 0 || Number(discount) > 100 ? 'Must be a positive number between 0 and 100' : undefined;
   }
 
-  validateFreeShippingMinimum(freeShippingMinimum: string | number | undefined): string| undefined {
+  validateFreeShippingMinimum(freeShippingMinimum: string | number | undefined): string | undefined {
     if (!this.state.freeShipping) {
       return undefined;
     }
