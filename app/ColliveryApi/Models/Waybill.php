@@ -13,7 +13,9 @@ class Waybill
 
     public int $id;
     public ?string $custom_id;
+    #[TypeScriptType(ServiceTypeId::class)]
     public int $service_type_id;
+    #[TypeScriptType(ServiceTypeName::class)]
     public string $service_type_name;
     public int $collection_time;
     public ?string $customer_reference;
