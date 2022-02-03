@@ -42,7 +42,10 @@ class ColliveryResponseCollection implements Arrayable
 
     public function toArray(): array
     {
-        // Use `Collection::toArray()` as it casts to array recursively
-        return collect($this)->toArray();
+        return [
+            'data' => $this->data->toArray(),
+            'links' => $this->links->toArray(),
+            'meta' => $this->meta->toArray(),
+        ];
     }
 }

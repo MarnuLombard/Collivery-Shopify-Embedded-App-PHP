@@ -59,13 +59,21 @@ class Meta implements Arrayable
         ];
     }
 
+    public function toArray(): array
+    {
+        return array_merge([
+            'current_page' => $this->current_page,
+            'last_page' => $this->last_page,
+            'path' => $this->path,
+            'per_page' => $this->per_page,
+            'total' => $this->total,
+            'from' => $this->from,
+            'to' => $this->to,
+        ], $this->etc);
+    }
+
     public function __get(string $name)
     {
         return $this->etc[$name] ?? null;
-    }
-
-    public function toArray(): array
-    {
-        return (array) $this;
     }
 }
