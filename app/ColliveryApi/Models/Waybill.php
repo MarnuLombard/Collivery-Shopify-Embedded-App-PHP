@@ -3,7 +3,10 @@
 namespace ShopifyPlugin\ColliveryApi\Models;
 
 use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use Spatie\TypeScriptTransformer\Attributes\TypeScriptType;
 
+#[TypeScript]
 class Waybill
 {
     use IsResponseComposable;

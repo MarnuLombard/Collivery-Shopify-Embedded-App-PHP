@@ -3,7 +3,9 @@
 namespace ShopifyPlugin\ColliveryApi\Models;
 
 use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class Parcel
 {
     use IsResponseComposable;

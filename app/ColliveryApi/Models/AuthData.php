@@ -6,11 +6,13 @@ use ShopifyPlugin\ColliveryApi\ResponseManagement\IsResponseComposable;
 use ShopifyPlugin\Exceptions\PropertyDoesNotExist;
 use ShopifyPlugin\Models\ColliverySettings;
 use ShopifyPlugin\Models\Shop;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 
 /**
  * @property Shop $shop
  */
+#[TypeScript]
 class AuthData
 {
     use IsResponseComposable {

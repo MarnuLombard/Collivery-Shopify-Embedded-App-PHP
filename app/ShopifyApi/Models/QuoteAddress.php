@@ -3,6 +3,9 @@
 
 namespace ShopifyPlugin\ShopifyApi\Models;
 
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
 class QuoteAddress extends BaseAddress
 {
     public ?string $address3 = null;

@@ -3,6 +3,9 @@
 
 namespace ShopifyPlugin\ShopifyApi\Models;
 
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
 class DefaultAddress extends BaseAddress
 {
     public ?string $company = null;

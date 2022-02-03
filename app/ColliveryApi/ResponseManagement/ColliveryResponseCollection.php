@@ -4,7 +4,9 @@ namespace ShopifyPlugin\ColliveryApi\ResponseManagement;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ColliveryResponseCollection implements Arrayable
 {
     /** @var Collection|IsResponseComposable[] */

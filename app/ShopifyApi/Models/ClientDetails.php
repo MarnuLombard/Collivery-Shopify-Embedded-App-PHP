@@ -4,7 +4,9 @@
 namespace ShopifyPlugin\ShopifyApi\Models;
 
 use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ClientDetails extends DataTransferObject
 {
     public string $accept_language;

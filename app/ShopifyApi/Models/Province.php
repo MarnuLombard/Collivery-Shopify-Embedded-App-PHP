@@ -2,9 +2,10 @@
 
 namespace ShopifyPlugin\ShopifyApi\Models;
 
-
 use Illuminate\Validation\ValidationException;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class Province
 {
     public const EASTERN_CAPE = 'EC';

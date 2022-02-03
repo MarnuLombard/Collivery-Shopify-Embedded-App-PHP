@@ -6,7 +6,9 @@ namespace ShopifyPlugin\ShopifyApi\Models;
 use Spatie\DataTransferObject\Attributes\CastWith;
 use Spatie\DataTransferObject\Casters\ArrayCaster;
 use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class Refund extends DataTransferObject
 {
     public int $id;

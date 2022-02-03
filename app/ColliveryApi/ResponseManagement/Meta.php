@@ -3,7 +3,9 @@
 namespace ShopifyPlugin\ColliveryApi\ResponseManagement;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class Meta implements Arrayable
 {
     public int $current_page;

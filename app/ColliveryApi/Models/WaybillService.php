@@ -2,6 +2,12 @@
 
 namespace ShopifyPlugin\ColliveryApi\Models;
 
+use ShopifyPlugin\Services\TypescriptTransformers\ConstantsToEnumTransformer;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use Spatie\TypeScriptTransformer\Attributes\TypeScriptTransformer;
+
+#[TypeScript]
+#[TypeScriptTransformer(ConstantsToEnumTransformer::class)]
 class WaybillService
 {
     public const SAME_DAY = 1;
