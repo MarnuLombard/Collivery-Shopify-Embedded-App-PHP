@@ -19,7 +19,7 @@ class Meta implements Arrayable
     {
         // Simplest way to merge two objects
         // Equivalent of JS `Object.assign()`
-        $input = (object) ((array) $input + (array) self::null());
+        $input = (object)((array)$input + (array)self::null());
 
         $this->current_page = $input->current_page;
         $this->last_page = $input->last_page;
@@ -46,7 +46,7 @@ class Meta implements Arrayable
 
     public static function null(): \stdClass
     {
-        return (object) [
+        return (object)[
             'current_page' => 1,
             'last_page' => 1,
             'path' => '',
@@ -57,7 +57,7 @@ class Meta implements Arrayable
         ];
     }
 
-    public function __get($name)
+    public function __get(string $name)
     {
         return $this->etc[$name] ?? null;
     }

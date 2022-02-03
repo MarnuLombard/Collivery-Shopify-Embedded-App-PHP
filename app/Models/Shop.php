@@ -22,6 +22,7 @@ use Osiset\ShopifyApp\Traits\ShopModel;
  * @property Carbon                 $updated_at
  * @property Carbon                 $deleted_at
  * @property-read ColliverySettings $colliverySettings
+ * @mixin \Eloquent
  */
 class Shop extends User implements ShopInterface
 {

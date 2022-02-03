@@ -12,6 +12,7 @@ use ShopifyPlugin\ShopifyApi\Models\QuoteAddress;
 
 class AddressInput implements Arrayable
 {
+    public ContactInput $contact;
     private ?int $town_id = null;
     private ?string $town_name = null;
     private ?int $suburb_id = null;
@@ -21,7 +22,6 @@ class AddressInput implements Arrayable
     private string $street;
     private int $location_type;
     private ?string $province = null;
-    public ContactInput $contact;
 
     /**
      * @throws ValidationException
@@ -33,7 +33,7 @@ class AddressInput implements Arrayable
         $address->town_name = $quoteAddress->city;
         $address->suburb_name = $quoteAddress->address3
             ?: $quoteAddress->address2
-            ?: $quoteAddress->city;
+                ?: $quoteAddress->city;
         $address->company_name = $quoteAddress->company_name;
         $address->building = $quoteAddress->address2;
         $address->street = $quoteAddress->address1;

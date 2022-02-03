@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ShopifyPlugin\Http\Controllers;
-
 
 class HomeController
 {

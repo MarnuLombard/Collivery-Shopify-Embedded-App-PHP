@@ -23,7 +23,6 @@ class Request
      */
     public function login(): AuthData
     {
-
         $settings = $this->colliverySettings->settings;
         $data = [
             'email' => $settings->userName,

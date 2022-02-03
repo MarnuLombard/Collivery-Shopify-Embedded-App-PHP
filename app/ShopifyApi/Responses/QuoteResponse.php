@@ -17,14 +17,14 @@ class QuoteResponse implements Arrayable
     public function toArray(): array
     {
         return [
-            'rates' => $this->quoteData->data->map(fn (Quote $quote) => [
+            'rates' => $this->quoteData->data->map(fn(Quote $quote) => [
                 'service_name' => WaybillService::$texts[$quote->service_type],
                 'service_code' => WaybillService::$briefNames[$quote->service_type],
                 'total_price' => round($quote->total * 100),
                 'currency' => 'ZAR',
                 'min_delivery_date' => $this->getDeliveryDate($quote->service_type).' 08:00:00 +0200',
                 'max_delivery_date' => $this->getDeliveryDate($quote->service_type).' 18:00:00 +0200',
-            ])->toArray()
+            ])->toArray(),
         ];
     }
 

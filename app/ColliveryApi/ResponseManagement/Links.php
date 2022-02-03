@@ -3,7 +3,9 @@
 namespace ShopifyPlugin\ColliveryApi\ResponseManagement;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class Links implements Arrayable
 {
     public string $first;
@@ -15,7 +17,7 @@ class Links implements Arrayable
     {
         // Simplest way to merge two objects
         // Equivalent of JS `Object.assign()`
-        $input = (object) ((array) $input + (array) self::null());
+        $input = (object)((array)$input + (array)self::null());
 
         $this->first = $input->first;
         $this->last = $input->last;
@@ -25,7 +27,7 @@ class Links implements Arrayable
 
     public static function null(): \stdClass
     {
-        return (object) [
+        return (object)[
             'first' => '',
             'last' => '',
             'next' => null,
@@ -35,6 +37,6 @@ class Links implements Arrayable
 
     public function toArray(): array
     {
-        return (array) $this;
+        return (array)$this;
     }
 }

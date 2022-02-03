@@ -13,6 +13,16 @@ trait IsResponseComposable
     private static string $modelNamespace = 'ShopifyPlugin\ColliveryApi\Models';
 
     /**
+     * Compose many of `static` from the response input
+     */
+    public static function fromResponseArray(array $responseData): array
+    {
+        return collect($responseData)
+            ->map(fn(\stdClass $datum) => static::fromResponse($datum))
+            ->toArray();
+    }
+
+    /**
      * @throws PropertyDoesNotExist
      * @throws ClassDoesNotExist
      * @throws MissingDocBlock
@@ -21,7 +31,7 @@ trait IsResponseComposable
     {
         $self = new static();
 
-        foreach ((array) $responseData as $key => $value) {
+        foreach ((array)$responseData as $key => $value) {
             if (!property_exists($self, $key)) {
                 throw PropertyDoesNotExist::make(static::class, $key);
             }
@@ -55,7 +65,6 @@ trait IsResponseComposable
                     ->prepend('\\'.static::$modelNamespace.'\\')
                     ->__toString();
 
-
                 $value = call_user_func([$className, 'fromResponseArray'], $value);
             }
 
@@ -66,21 +75,11 @@ trait IsResponseComposable
     }
 
     /**
-     * Compose many of `static` from the response input
-     */
-    public static function fromResponseArray(array $responseData): array
-    {
-        return collect($responseData)
-            ->map(fn (\stdClass $datum) => static::fromResponse($datum))
-            ->toArray();
-    }
-
-    /**
      * @throws PropertyDoesNotExist
      */
     public static function fromResponseToCollection(\stdClass $response): ColliveryResponseCollection
     {
-        $data = array_map(fn ($datum) => static::fromResponse($datum), $response->data);
+        $data = array_map(fn($datum) => static::fromResponse($datum), $response->data);
 
         return new ColliveryResponseCollection($data, $response->links ?? null, $response->meta ?? null);
     }

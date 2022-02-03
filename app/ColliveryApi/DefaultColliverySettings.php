@@ -32,6 +32,11 @@ class DefaultColliverySettings
             : 'http://api.collivery.local/v3';
     }
 
+    public function isProduction(): bool
+    {
+        return app()->environment() === 'production';
+    }
+
     private function getAppHost(): string
     {
         $packageJson = json_decode(file_get_contents(base_path('node_modules/@shopify/polaris/package.json')));
@@ -53,7 +58,7 @@ class DefaultColliverySettings
         $version = \Cache::remember(
             'collivery_settings:app_version',
             now()->addDay(),
-            fn () => exec(sprintf(
+            fn() => exec(sprintf(
                 'git -C "%s" tag | tail -n 1',
                 base_path()
             ))
@@ -67,39 +72,6 @@ class DefaultColliverySettings
         }
 
         return $version;
-    }
-
-    public function isProduction(): bool
-    {
-        return app()->environment() === 'production';
-    }
-
-    /**
-     * @throws PropertyDoesNotExist
-     */
-    public function __get($name)
-    {
-        // Check whether we have a dynamic accessor for it
-        $method = 'get'.ucfirst($name);
-
-        if (method_exists(self::class, $method)) {
-            $ttl = app()->environment('production') ? now()->addHours(12) : 5;
-
-            return \Cache::tags('collivery_settings:default')
-                ->remember($name, $ttl, fn() => $this->{$method}());
-        }
-
-        if (property_exists(self::class, $name)) {
-            return $this->{$name};
-        }
-
-        throw new PropertyDoesNotExist(
-            sprintf(
-                "Could not access %s::\$%s. It doesn't exist.",
-                self::class,
-                $name
-            )
-        );
     }
 
 }

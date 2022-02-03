@@ -47,7 +47,7 @@ class QuoteInput implements Arrayable
             'length' => $averageParcelDimension,
             'width' => $averageParcelDimension,
             'height' => $averageParcelDimension,
-            'weight' => round($item->grams/100, 2),
+            'weight' => round($item->grams / 100, 2),
             'quantity' => $item->quantity,
         ], $quoteRequest->rate->items);
 
@@ -72,10 +72,9 @@ class QuoteInput implements Arrayable
             'length' => $averageParcelDimension,
             'width' => $averageParcelDimension,
             'height' => $averageParcelDimension,
-            'weight' => round($item->grams/100, 2),
+            'weight' => round($item->grams / 100, 2),
             'quantity' => $item->quantity,
         ], $order->line_items);
-
 
         $authData = (new AuthManager($this->colliverySettings->shop))->current();
         $this->collection_address = AddressInput::fromColliveryAuthData($authData);

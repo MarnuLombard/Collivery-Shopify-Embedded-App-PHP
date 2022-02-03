@@ -112,6 +112,7 @@ class ColliverySettingsCollection
 
     /**
      * Make the private properties read-only
+     *
      * @throws PropertyDoesNotExist
      */
     public function __get($name)
@@ -122,7 +123,5 @@ class ColliverySettingsCollection
 
         throw PropertyDoesNotExist::make(self::class, $name);
     }
-
-
 
 }

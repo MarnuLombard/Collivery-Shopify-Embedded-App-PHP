@@ -169,8 +169,8 @@ return [
     */
 
     'extra' => [
-        'Eloquent' => ['Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'],
-        'Session' => ['Illuminate\Session\Store'],
+        'Eloquent' => [\Illuminate\Database\Eloquent\Builder::class, Builder::class],
+        'Session' => [Store::class],
     ],
 
     'magic' => [],

@@ -11,11 +11,10 @@ class VerifyCsrfToken extends Middleware
      * You must disable CSRF as there is currently
      * no solution for verifying session tokens with CSRF,
      * there is a conflict due to new login creation each request.
-     *
      * Shopify is responsible for sending the requests.
      * We verify requests with them
      */
     protected $except = [
-        '*'
+        '*',
     ];
 }

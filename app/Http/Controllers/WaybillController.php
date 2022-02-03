@@ -30,6 +30,5 @@ class WaybillController
         $waybillRequest = new WaybillApiRequest($shop->colliverySettings);
 
         return response()->json(['data' => $waybillRequest->show($waybill)]);
-
     }
 }

@@ -14,7 +14,7 @@ class ApiRequest
 
     // Exclude the api token from these paths
     private array $excludeToken = [
-        'login'
+        'login',
     ];
 
     public function __construct(ColliverySettings $colliverySettings)

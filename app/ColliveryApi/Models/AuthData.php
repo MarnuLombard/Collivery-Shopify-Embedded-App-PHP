@@ -16,6 +16,7 @@ class AuthData
     use IsResponseComposable {
         fromResponse as baseFromResponse;
     }
+
     public int $id;
     public string $full_name;
     public string $email_address;

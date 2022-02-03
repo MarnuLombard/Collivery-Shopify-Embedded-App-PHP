@@ -12,7 +12,6 @@ class WaybillApiRequest extends ApiRequest
     /**
      * @throws HttpClientException
      * @throws PropertyDoesNotExist
-     *
      * @return Waybill[]|ColliveryResponseCollection
      */
     public function index(): ColliveryResponseCollection

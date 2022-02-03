@@ -13,7 +13,7 @@ class ColliveryResponseCollection implements Arrayable
     public Meta $meta;
 
     /**
-     * @param IsResponseComposable[]     $data
+     * @param IsResponseComposable[] $data
      */
     public function __construct(array $data, ?\stdClass $links, ?\stdClass $meta)
     {
