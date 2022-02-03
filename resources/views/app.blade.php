@@ -6,19 +6,19 @@
 @endsection
 
 @section('content')
-  <div id="app"></div>
+    <div id="app"></div>
 @endsection
 
 @section('scripts')
-  @parent
+    @parent
 
-  <script>
-    var pluginHost = "{{ config('app.domain') }}";
-    var apiKey = "{{ \Osiset\ShopifyApp\Util::getShopifyConfig('api_key', $shopDomain ?? $user->name ) }}";
-    var shopOrigin = "{{ $shopDomain ?? $user->name }}";
-  </script>
-  <script src="{{ mix('/js/app.js') }}"></script>
-  <script>
-    actions.TitleBar.create(app, { title: 'Welcome' });
-  </script>
+    <script>
+        var pluginHost = "{{ config('app.domain') }}";
+        var apiKey = "{{ \Osiset\ShopifyApp\Util::getShopifyConfig('api_key', $shopDomain ?? optional($user)->name ) }}";
+        var shopOrigin = "{{ $shopDomain ?? optional($user)->name }}";
+    </script>
+    <script src="{{ mix('/js/app.js') }}"></script>
+    <script>
+        actions.TitleBar.create(app, {title: 'Welcome'});
+    </script>
 @endsection
