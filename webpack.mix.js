@@ -1,8 +1,10 @@
 const mix = require('laravel-mix');
-const {CompileRoutes} = require('@mds-tech/compile_routes')
+const {CompileRoutes} = require('@mds-tech/compile_routes');
+const fs = require('fs');
 
 const compileRoutes = new CompileRoutes({outputPath: 'resource/js/routes.js'});
 
+/** @typedef {import('laravel-mix/src/Mix')} Mix */
 // Compile our routes js file
 // Watch our routes php files in order to recompile js routes
 if (Mix.isWatching() || Mix.isPolling()) {
@@ -20,19 +22,27 @@ mix
 .ts('resources/js/app.js', 'public/js')
 .react()
 .webpackConfig({
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/
-            }
-        ]
-    },
-    resolve: {
-        extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
-    },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
+  },
+  devtool: 'inline-source-map',
 
-})
-.sourceMaps()
-.version();
+}).sourceMaps().version();
+
+Mix.config.hmrOptions = {
+  https: {
+    key: fs.readFileSync('/Volumes/Docker/nginx/certs/live/mds-integrated-test.collivery.co.za/privkey.pem'),
+    cert: fs.readFileSync('/Volumes/Docker/nginx/certs/live/mds-integrated-test.collivery.co.za/fullchain.pem'),
+  },
+  host: process.env.APP_DOMAIN,
+  port: 8080,
+};
