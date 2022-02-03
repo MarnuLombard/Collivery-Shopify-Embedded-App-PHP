@@ -15,7 +15,7 @@ class Meta implements Arrayable
     public int $total;
     public ?int $from;
     public ?int $to;
-    private array $etc = [];
+    private array $etc;
 
     public function __construct(\stdClass $input)
     {
@@ -31,7 +31,7 @@ class Meta implements Arrayable
         $this->from = $input->from;
         $this->to = $input->to;
 
-        $etc = (array) $input;
+        $etc = (array)$input;
 
         unset(
             $etc['current_page'],
