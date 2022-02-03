@@ -28,41 +28,7 @@ class WaybillModal extends React.Component<Props, State> {
   state = {
     waybillImage: null,
     imageVisible: false,
-  }
-
-  render() {
-    const {open, waybillData} = this.props;
-    const {waybillImage, imageVisible} = this.state;
-
-    if (!waybillData.hasOwnProperty('weight')) {
-      return (null);
-    }
-
-    const {id} = waybillData as Waybill;
-    return (
-      <Modal
-        open={open}
-        onClose={this.handleOnClose.bind(this)}
-        title={`Waybill ${id}`}
-        secondaryActions={this.actions}>
-        {
-          imageVisible
-            ? <WaybillModalImage handleClose={this.handleImageClose.bind(this)} waybillImage={waybillImage} waybillData={waybillData}/>
-            : <WaybillModalDetails waybillData={waybillData}/>
-        }
-      </Modal>
-    );
-  }
-
-  handleOnClose() {
-    this.props.handleModalClose();
-  }
-
-  handleImageClose() {
-    this.setState({
-      imageVisible: false,
-    })
-  }
+  };
 
   get actions(): ComplexAction[] {
     const waybill: Waybill = this.props.waybillData;

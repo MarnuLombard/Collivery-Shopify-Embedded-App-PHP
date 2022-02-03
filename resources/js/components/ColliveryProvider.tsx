@@ -50,23 +50,35 @@ class ColliveryProvider extends React.Component<Props> {
     return (
       <div>
         <ColliveryContext.Provider
-          value={{
-            pluginHost,
-            triggerError,
-            triggerSuccess,
-            polarisApp,
-            browserFetch,
-          }}
+            value={{
+              pluginHost,
+              triggerError,
+              triggerSuccess,
+              polarisApp,
+              browserFetch,
+            }}
         >
           {this.props.children}
         </ColliveryContext.Provider>
-        <FeedbackBanners toggleActive={this.state.toggleActive} criticalActive={this.state.criticalActive} criticalText={this.state.criticalText} criticalChildren={this.state.criticalText} successActive={this.state.successActive} successText={this.state.successText} successChildren={this.state.successText} warningActive={this.state.warningActive} warningText={this.state.warningText} warningChildren={this.state.warningText}></FeedbackBanners>
+        <FeedbackBanners
+            toggleActive={this.state.toggleActive}
+            criticalActive={this.state.criticalActive}
+            criticalText={this.state.criticalText}
+            criticalChildren={this.state.criticalText}
+            successActive={this.state.successActive}
+            successText={this.state.successText}
+            successChildren={this.state.successText}
+            warningActive={this.state.warningActive}
+            warningText={this.state.warningText}
+            warningChildren={this.state.warningText}
+        ></FeedbackBanners>
       </div>
     );
   }
 
-  toggleBanner(level) {
-    const name = `${level}Active`;
+  toggleBanner(level: string) {
+    const name = `${level}Active` as keyof FeedbackBannerProps;
+
     return () => {
       const currentState = this.state[name];
       this.setState({[name]: !currentState});

@@ -85,4 +85,3 @@ class Home extends Component<never, State> {
 }
 
 export default Home;
-

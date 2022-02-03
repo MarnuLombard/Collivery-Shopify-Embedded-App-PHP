@@ -1,19 +1,19 @@
 import React from 'react';
-import {Modal} from "@shopify/app-bridge-react";
-import {Modal as PolarisModal, TextContainer} from "@shopify/polaris";
+import {Modal} from '@shopify/app-bridge-react';
+import {Modal as PolarisModal, TextContainer} from '@shopify/polaris';
 
-type Props = {
-  toggleActive: Function,
-  criticalActive?: boolean,
-  criticalText?: string,
-  criticalChildren?: React.ReactNode,
-  warningActive?: boolean,
-  warningText?: string,
-  warningChildren?: React.ReactNode,
-  successActive?: boolean,
-  successText?: string,
-  successChildren?: React.ReactNode,
-}
+export type Props = {
+  toggleActive: (level: string) => () => void;
+  criticalActive?: boolean;
+  criticalText?: string;
+  criticalChildren?: React.ReactNode;
+  warningActive?: boolean;
+  warningText?: string;
+  warningChildren?: React.ReactNode;
+  successActive?: boolean;
+  successText?: string;
+  successChildren?: React.ReactNode;
+};
 
 export default class FeedbackBanners extends React.Component<Props> {
   render() {
