@@ -9,7 +9,7 @@ Route::middleware(['verify.shopify', 'collivery.auth', 'collivery.carrier_servic
             // Everything hits the same controller
         Route::get('/', HomeController::class)->name('home');
         Route::get('/settings', HomeController::class)->name('settings');
-        Route::get('/orders/process', HomeController::class)->name('orders.process');
+        Route::get('/orders/quote', HomeController::class)->name('orders.quote');
     });
 
 Route::middleware(['auth.webhook'])
