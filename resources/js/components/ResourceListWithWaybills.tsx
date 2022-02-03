@@ -2,10 +2,10 @@ import {Card, ResourceList, Stack, TextStyle, Thumbnail} from '@shopify/polaris'
 import React, {ReactNode} from 'react';
 import {ColliveryContext, MyContext} from './ColliveryProvider';
 import route from '../lib/Helpers/Route';
-import {Waybill} from '../types/Collivery/Waybill';
 import {ClientApplication} from '@shopify/app-bridge/client/types';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
 import {ResponseCollection} from '../types/Collivery/ResponseCollection';
+import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {
   handleModalOpen: (waybillId: number) => void;

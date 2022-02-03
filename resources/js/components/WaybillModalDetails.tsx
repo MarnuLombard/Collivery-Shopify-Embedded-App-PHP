@@ -1,6 +1,6 @@
 import React from 'react';
 import {DescriptionList, Modal, TextContainer} from '@shopify/polaris';
-import {Waybill} from "../types/Collivery/Waybill";
+import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {
   waybillData: Waybill,

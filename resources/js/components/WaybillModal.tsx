@@ -1,7 +1,6 @@
 import {Modal} from '@shopify/polaris';
 import React, {ReactNode} from 'react';
 import {ColliveryContext, MyContext} from './ColliveryProvider';
-import {Waybill} from '../types/Collivery/Waybill';
 import {ComplexAction} from '@shopify/polaris/build/ts/latest/src/types';
 import route from '../lib/Helpers/Route';
 import {NoteMajor} from '@shopify/polaris-icons';
@@ -9,6 +8,7 @@ import WaybillModalDetails from './WaybillModalDetails';
 import WaybillModalImage from './WaybillModalImage';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
 import {ResponseData} from '../types/Collivery/ResponseCollection';
+import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {
   open: boolean;

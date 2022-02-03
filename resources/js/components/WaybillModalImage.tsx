@@ -1,6 +1,7 @@
-import {Card} from "@shopify/polaris";
-import React from "react";
-import {Waybill} from "../types/Collivery/Waybill";
+import {Card} from '@shopify/polaris';
+import React from 'react';
+
+import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type Props = {
   waybillImage: null|string,

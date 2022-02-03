@@ -1,15 +1,10 @@
+import WaybillService = ShopifyPlugin.ColliveryApi.Models.WaybillService;
+
 export enum ServiceTypeName {
   SameDay = 'Same Day',
   NextDay = 'Next Day',
   Freight = 'Road Freight Express',
   Economy = 'Road Freight',
-}
-
-export enum ServiceTypeId {
-  SameDay = 1,
-  NextDay = 2,
-  Freight = 3,
-  Economy = 5,
 }
 
 export enum ServiceTypeCode {
@@ -20,31 +15,39 @@ export enum ServiceTypeCode {
 }
 
 export default class ServiceType {
-  id: ServiceTypeId;
+  id: WaybillService;
   name: ServiceTypeName;
   code: ServiceTypeCode;
 
-  constructor(id: ServiceTypeId) {
+  constructor(id: WaybillService) {
     this.id = id;
     this.name = ServiceType.getName(id);
     this.code = ServiceType.getCode(id);
   }
 
-  static getName(id: ServiceTypeId): ServiceTypeName {
+  static getName(id: WaybillService): ServiceTypeName {
     switch (id) {
-      case ServiceTypeId.SameDay : return ServiceTypeName.SameDay;
-      case ServiceTypeId.NextDay : return ServiceTypeName.NextDay;
-      case ServiceTypeId.Freight : return ServiceTypeName.Freight;
-      case ServiceTypeId.Economy : return ServiceTypeName.Economy;
+      case WaybillService.SAME_DAY:
+        return ServiceTypeName.SameDay;
+      case WaybillService.NEXT_DAY:
+        return ServiceTypeName.NextDay;
+      case WaybillService.FREIGHT:
+        return ServiceTypeName.Freight;
+      case WaybillService.ECONOMY:
+        return ServiceTypeName.Economy;
     }
   }
 
-  static getCode(id: ServiceTypeId): ServiceTypeCode {
+  static getCode(id: WaybillService): ServiceTypeCode {
     switch (id) {
-      case ServiceTypeId.SameDay : return ServiceTypeCode.SameDay;
-      case ServiceTypeId.NextDay : return ServiceTypeCode.NextDay;
-      case ServiceTypeId.Freight : return ServiceTypeCode.Freight;
-      case ServiceTypeId.Economy : return ServiceTypeCode.Economy;
+      case WaybillService.SAME_DAY:
+        return ServiceTypeCode.SameDay;
+      case WaybillService.NEXT_DAY:
+        return ServiceTypeCode.NextDay;
+      case WaybillService.FREIGHT:
+        return ServiceTypeCode.Freight;
+      case WaybillService.ECONOMY:
+        return ServiceTypeCode.Economy;
     }
   }
 }

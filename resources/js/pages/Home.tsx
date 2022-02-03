@@ -7,9 +7,9 @@ import WaybillModal from '../components/WaybillModal';
 import RunGraphQL from '../components/RunGraphQL';
 import ResourceListWithWaybills from '../components/ResourceListWithWaybills';
 import route from '../lib/Helpers/Route';
-import {Waybill} from '../types/Collivery/Waybill';
 import {FetchInterface} from '../lib/Helpers/BrowserFetch';
 import {ResponseData} from '../types/Collivery/ResponseCollection';
+import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
 
 type State = {
   selectedWaybill: number | null;
