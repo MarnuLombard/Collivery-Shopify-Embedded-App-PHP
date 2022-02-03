@@ -13,8 +13,8 @@ class Rate extends DataTransferObject
 {
     public QuoteAddress $origin;
     public QuoteAddress $destination;
-    /** @var ShippingLine[] */
-    #[CastWith(ArrayCaster::class, LineItem::class)]
+    /** @var \ShopifyPlugin\ShopifyApi\Models\ShippingLine[] */
+    #[CastWith(ArrayCaster::class, itemType: LineItem::class)]
     public array $items;
     public string $currency;
     public string $locale;
