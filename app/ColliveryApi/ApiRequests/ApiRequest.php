@@ -46,18 +46,6 @@ class ApiRequest
         return $responseData->object();
     }
 
-
-    private function getRequest(): PendingRequest
-    {
-        $settings = $this->colliverySettings->settings;
-
-        return \Http::acceptJson()
-            ->asJson()
-            ->baseUrl($settings->baseUrl)
-            ->withHeaders($this->colliverySettings->headers)
-            ->retry(3, 500);
-    }
-
     private function mergeTokenData(string $path, array $queryOrData = []): array
     {
         $path = str_replace('/', '', $path);
@@ -69,6 +57,17 @@ class ApiRequest
         $token = (new AuthManager($this->colliverySettings->shop))->current()->api_token;
 
         return (array_merge($queryOrData, ['api_token' => $token]));
+    }
+
+    private function getRequest(): PendingRequest
+    {
+        $settings = $this->colliverySettings->settings;
+
+        return \Http::acceptJson()
+            ->asJson()
+            ->baseUrl($settings->baseUrl)
+            ->withHeaders($this->colliverySettings->headers)
+            ->retry(3, 500);
     }
 
     /**

@@ -25,16 +25,16 @@ class DefaultColliverySettings
     private bool $freeShipping = false;
     private int $freeShippingMinimum = 0;
 
+    public function isProduction(): bool
+    {
+        return app()->environment() === 'production';
+    }
+
     private function getBaseUrl(): string
     {
         return $this->isProduction()
             ? 'https://api.collivery.co.za/v3'
             : 'http://api.collivery.local/v3';
-    }
-
-    public function isProduction(): bool
-    {
-        return app()->environment() === 'production';
     }
 
     private function getAppHost(): string
@@ -74,4 +74,31 @@ class DefaultColliverySettings
         return $version;
     }
 
+    /**
+     * @throws PropertyDoesNotExist
+     */
+    public function __get($name)
+    {
+        // Check whether we have a dynamic accessor for it
+        $method = 'get'.ucfirst($name);
+
+        if (method_exists(self::class, $method)) {
+            $ttl = app()->environment('production') ? now()->addHours(12) : 5;
+
+            return \Cache::tags('collivery_settings:default')
+                ->remember($name, $ttl, fn() => $this->{$method}());
+        }
+
+        if (property_exists(self::class, $name)) {
+            return $this->{$name};
+        }
+
+        throw new PropertyDoesNotExist(
+            sprintf(
+                "Could not access %s::\$%s. It doesn't exist.",
+                self::class,
+                $name
+            )
+        );
+    }
 }

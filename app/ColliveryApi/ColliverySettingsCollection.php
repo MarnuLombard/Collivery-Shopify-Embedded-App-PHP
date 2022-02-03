@@ -74,6 +74,11 @@ class ColliverySettingsCollection
         return $self;
     }
 
+    private static function getDefault(string $property): mixed
+    {
+        return (new DefaultColliverySettings())->{$property};
+    }
+
     /**
      * @throws \JsonException
      */
@@ -83,7 +88,7 @@ class ColliverySettingsCollection
         $self = clone $this;
         unset($self->appVersion, $self->baseUrl, $self->appName, $self->appHost);
 
-        return json_encode($self, JSON_FORCE_OBJECT|JSON_THROW_ON_ERROR);
+        return json_encode($self, JSON_FORCE_OBJECT | JSON_THROW_ON_ERROR);
     }
 
     public function toArray(): array
@@ -100,14 +105,6 @@ class ColliverySettingsCollection
             'freeShipping' => $this->freeShipping,
             'freeShippingMinimum' => $this->freeShippingMinimum,
         ];
-    }
-
-    /**
-     * @return mixed
-     */
-    private static function getDefault(string $property)
-    {
-        return (new DefaultColliverySettings())->{$property};
     }
 
     /**
