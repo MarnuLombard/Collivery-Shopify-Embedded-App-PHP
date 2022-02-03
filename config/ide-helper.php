@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Session\Store;
+use ShopifyPlugin\Models\Shop;
+
 return [
 
     /*
@@ -186,7 +191,7 @@ return [
     */
 
     'interfaces' => [
-
+        Authenticatable::class => Shop::class,
     ],
 
     /*
