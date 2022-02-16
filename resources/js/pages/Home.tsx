@@ -16,7 +16,7 @@ type State = {
   waybillData?: Waybill;
 };
 
-class Home extends Component<never, State> {
+class Home extends Component<any, State> {
   static contextType = ColliveryContext;
   context!: MyContext;
 
