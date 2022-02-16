@@ -1,9 +1,17 @@
-import {Config, default as ziggyRoute, RouteParamsWithQueryOverload} from 'ziggy-js'
-import {Ziggy} from '../../routes'
+import {Config, default as ziggyRoute, RouteParamsWithQueryOverload, Router} from 'ziggy-js';
+import {Ziggy} from '../../routes';
 
-const route = (name: string, params?: RouteParamsWithQueryOverload, absolute?: boolean) => ziggyRoute(name, params, absolute, Ziggy as unknown as Config);
+function route(): Router;
+function route(name: string, params?: RouteParamsWithQueryOverload, absolute?: boolean): string;
+
+function route(name?: string, params?: RouteParamsWithQueryOverload, absolute?: boolean): string | Router {
+  if (typeof name === 'undefined') {
+    return ziggyRoute();
+  }
+
+  return ziggyRoute(name, params, absolute, Ziggy as unknown as Config);
+}
 
 window.route = route;
 
 export default route;
-
