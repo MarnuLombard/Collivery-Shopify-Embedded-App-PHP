@@ -15,6 +15,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended'
   ],
   rules: {
     '@typescript-eslint/no-unsafe-call': 0,
