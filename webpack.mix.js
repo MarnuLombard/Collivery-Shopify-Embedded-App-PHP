@@ -19,7 +19,7 @@ compileRoutes.compile();
 
 mix
 .sass('resources/sass/app.scss', 'public/css/')
-.ts('resources/js/app.js', 'public/js')
+.ts('resources/js/app.tsx', 'public/js')
 .react()
 .webpackConfig({
   module: {

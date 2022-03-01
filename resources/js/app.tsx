@@ -1,42 +1,37 @@
-import './types/generated';
+import 'react/jsx-runtime';
+import './types/window';
+import ColliveryProvider from './components/ColliveryProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './pages/_app';
-import route from './lib/Helpers/Route';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
-import QuoteOrder from './pages/QuoteOrder';
-import Settings from './pages/Settings';
-import {Route, Switch} from 'react-router-dom';
+import Router from './components/Router';
+import Translations from '@shopify/polaris/locales/en.json';
+import {AppConfig} from '@shopify/app-bridge/client/types';
+import {AppProvider} from '@shopify/polaris';
+import {BrowserRouter} from 'react-router-dom';
+import {Provider} from '@shopify/app-bridge-react';
+import {Buffer} from 'buffer';
 
 const apiKey = window.apiKey;
 const shop = window.shopOrigin;
 const pluginHost = window.pluginHost;
-
-const current = route().current() || 'home';
 const element = document.getElementById('app');
 
-const params = new URL(document.location.href).searchParams;
-const indexPath = new URL(route('home')).pathname;
-const settingsPath = new URL(route('settings')).pathname;
-const ordersQuotePath = new URL(route('orders.quote')).pathname;
+const shopifyConfig: AppConfig = {
+  apiKey,
+  host: Buffer.from(shop, 'base64').toString(),
+  forceRedirect: true,
+};
 
 ReactDOM.render(
-  <App apiKey={apiKey} shop={shop} pluginHost={pluginHost}>
-    <Switch>
-      <Route path={indexPath} exact={true}>
-        <Home />
-      </Route>
-      <Route path={settingsPath}>
-        <Settings />
-      </Route>
-      <Route path={ordersQuotePath}>
-        <QuoteOrder orderId={Number(params.get('id'))} />
-      </Route>
-      <Route path="*">
-        <NotFound current={current} />
-      </Route>
-    </Switch>
-  </App>,
+  <React.Fragment>
+    <BrowserRouter>
+      <Provider config={shopifyConfig}>
+        <AppProvider i18n={Translations}>
+          <ColliveryProvider pluginHost={pluginHost} shopifyApiKey={apiKey} shop={shop}></ColliveryProvider>
+          <Router />
+        </AppProvider>
+      </Provider>
+    </BrowserRouter>
+  </React.Fragment>,
   element
 );
