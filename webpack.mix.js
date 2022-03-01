@@ -2,7 +2,7 @@ const mix = require('laravel-mix');
 const {CompileRoutes} = require('@mds-tech/compile_routes');
 const fs = require('fs');
 
-const compileRoutes = new CompileRoutes({outputPath: 'resource/js/routes.js'});
+const compileRoutes = new CompileRoutes({outPath: 'resources/js/routes.ts'});
 
 /** @typedef {import('laravel-mix/src/Mix')} Mix */
 // Compile our routes js file

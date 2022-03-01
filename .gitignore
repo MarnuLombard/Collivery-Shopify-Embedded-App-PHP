@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/**/*
+/resources/js/routes.ts
 /resources/js/**/*.js
 /resources/js/**/*.js.map
 /vendor

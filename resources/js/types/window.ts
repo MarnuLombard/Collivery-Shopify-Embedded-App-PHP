@@ -10,10 +10,16 @@ declare global {
     route: typeof route;
     app: ClientApplication<any>;
     utils: Utils.AuthorizedFetchOptions;
+    Ziggy: {
+      url: string;
+      port: number | null;
+      defaults: object;
+      routes: Record<string, {uri: string; methods: string[]; wheres?: {plan: string}}>;
+    };
   }
 }
 
 // eslint-disable-next-line no-var
-declare var window : Window & typeof globalThis;
+declare var window: Window & typeof globalThis;
 
-export {}
+export {};
