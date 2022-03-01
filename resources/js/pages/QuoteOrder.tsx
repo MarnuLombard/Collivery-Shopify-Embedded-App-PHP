@@ -1,108 +1,92 @@
-import React, {Component} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import route from '../lib/Helpers/Route';
 import {ColliveryContext, MyContext} from '../components/ColliveryProvider';
 import {QuoteCollection, QuoteResponseCollection} from '../types/Collivery/Quote';
 import QuoteDisplay from '../components/QuoteDisplay';
 import {Banner, Button, Card, Frame, Loading, TextContainer} from '@shopify/polaris';
-import {FetchInterface} from '../lib/Helpers/BrowserFetch';
 import {ResponseData} from '../types/Collivery/Responses';
 import {Redirect} from '@shopify/app-bridge/actions';
 import {Action} from '@shopify/app-bridge/actions/Navigation/Redirect';
 import {ChevronDownMinor} from '@shopify/polaris-icons';
-import Order = ShopifyPlugin.ShopifyApi.Models.Order;
+import {Order} from '../types/ShopifyPlugin/ShopifyApi/Models/Order';
+import {useParams} from 'react-router-dom';
 
-type Props = {
-  orderId: number;
-};
+const QuoteOrder = (): JSX.Element => {
+  const [quoteCollection, setQuoteCollection] = useState<QuoteCollection>();
+  const [order, setOrder] = useState<Order>();
+  const {browserFetch, triggerError, polarisApp} = useContext<MyContext>(ColliveryContext);
+  const {id} = useParams<Record<string, string>>();
 
-type State = {
-  quoteCollection?: QuoteCollection;
-  order?: Order;
-};
+  const fetchQuotes = async (): Promise<void> => {
+    await browserFetch(route('api.orders.quote', {order: id as string})).then((response: QuoteResponseCollection) => {
+      if (!response) {
+        return;
+      }
 
-export default class QuoteOrder extends Component<Props, State> {
-  static contextType = ColliveryContext;
-  context!: MyContext;
-
-  state = {
-    quoteCollection: undefined,
-    order: undefined,
+      setQuoteCollection(QuoteCollection.fromResponseCollection(response));
+      console.log(quoteCollection);
+    });
   };
 
-  render() {
-    return (
-      <Frame>
-        {!this.props.orderId ? (
-          <Card sectioned>
-            <TextContainer>
-              <Banner title="No order selected" action={{content: 'Choose order', onAction: this.redirectToOrders(0).bind(this)}} status="critical">
-                <p>
-                  Please select an order to create a waybill from. <br />
-                  When viewing an order, select{' '}
-                  <span style={{verticalAlign: 'middle'}}>
-                    <Button outline disabled size="slim" icon={ChevronDownMinor} onClick={() => undefined}>
-                      More actions
-                    </Button>
-                  </span>{' '}
-                  menu item.
-                </p>
-              </Banner>
-            </TextContainer>
-          </Card>
-        ) : !this.state.quoteCollection || !this.state.order ? (
-          <Loading />
-        ) : (
-          <QuoteDisplay quoteCollection={this.state.quoteCollection} order={this.state.order} />
-        )}
-      </Frame>
-    );
-  }
-
-  componentDidMount() {
-    const {triggerError} = this.context;
-
-    if (!this.props.orderId) {
-      this.redirectToOrders(5000).bind(this)();
-      return;
-    }
-
-    this.fetchOrder().catch((e: Error) => triggerError(e.message));
-    this.fetchQuotes().catch((e: Error) => triggerError(e.message));
-  }
-
-  redirectToOrders(timeout = 0): () => void {
-    return () => {
-      setTimeout(() => {
-        const redirect = Redirect.create(this.context.polarisApp);
+  const redirectToOrders = (timeout = 0): void => {
+    useEffect(() => {
+      const handle = setTimeout(() => {
+        const redirect = Redirect.create(polarisApp);
         redirect.dispatch(Action.ADMIN_SECTION, {
           name: Redirect.ResourceType.Order,
         });
+
+        return () => clearTimeout(handle);
       }, timeout);
-    };
-  }
+    }, []);
+  };
 
-  async fetchOrder() {
-    const browserFetch = this.context.browserFetch;
-
-    await browserFetch(route('api.orders.show', {order: this.props.orderId})).then((response: ResponseData<Order, never>) => {
+  const fetchOrder = async (): Promise<void> => {
+    await browserFetch(route('api.orders.show', {order: id as string})).then((response: ResponseData<Order, never>) => {
       if (!response) {
         return;
       }
 
-      this.setState({order: response.data});
+      setOrder(response.data);
     });
-  }
+  };
 
-  async fetchQuotes() {
-    const {browserFetch}: {browserFetch: FetchInterface<QuoteResponseCollection>} = this.context;
+  useEffect(() => {
+    if (!id) {
+      redirectToOrders(5000);
+      return;
+    }
 
-    await browserFetch(route('api.orders.quote', {order: this.props.orderId})).then((response: QuoteResponseCollection) => {
-      if (!response) {
-        return;
-      }
+    fetchOrder().catch((e: Error) => triggerError(e.message));
+    fetchQuotes().catch((e: Error) => triggerError(e.message));
+  }, []);
 
-      this.setState({quoteCollection: QuoteCollection.fromResponseCollection(response)});
-      console.log(this.state.quoteCollection);
-    });
-  }
-}
+  return (
+    <Frame>
+      {!id ? (
+        <Card sectioned>
+          <TextContainer>
+            <Banner title="No order selected" action={{content: 'Choose order', onAction: () => redirectToOrders(0)}} status="critical">
+              <p>
+                Please select an order to create a waybill from. <br />
+                When viewing an order, select{' '}
+                <span style={{verticalAlign: 'middle'}}>
+                  <Button outline disabled size="slim" icon={ChevronDownMinor} onClick={() => undefined}>
+                    More actions
+                  </Button>
+                </span>{' '}
+                menu item.
+              </p>
+            </Banner>
+          </TextContainer>
+        </Card>
+      ) : !quoteCollection || !order ? (
+        <Loading />
+      ) : (
+        <QuoteDisplay quoteCollection={quoteCollection} order={order} />
+      )}
+    </Frame>
+  );
+};
+
+export default QuoteOrder;

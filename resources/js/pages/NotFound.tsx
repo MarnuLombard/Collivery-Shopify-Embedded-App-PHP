@@ -1,19 +1,21 @@
-import React from "react";
-import {Banner, Link} from "@shopify/polaris";
+import React, {useEffect, useState} from 'react';
+import {Banner, Link} from '@shopify/polaris';
 
 type Props = {
-  current: string,
-}
+  current: string;
+};
 
 const NotFound: React.FC<Props> = (props): JSX.Element => {
-  const goBack = () => window.history.back();
+  const [goBack, setGoBack] = useState<() => void>();
+
+  useEffect(() => setGoBack(window.history.back.bind(this)), []);
 
   return (
     <Banner
       title="Page not found"
       action={{
         content: 'Go back',
-        onAction: goBack
+        onAction: goBack,
       }}
       status="critical"
     >
@@ -23,6 +25,6 @@ const NotFound: React.FC<Props> = (props): JSX.Element => {
       {props.children}
     </Banner>
   );
-}
+};
 
 export default NotFound;

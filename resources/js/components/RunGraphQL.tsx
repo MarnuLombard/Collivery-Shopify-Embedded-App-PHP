@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class RunGraphQL extends React.Component {
-  render() {
-    return (
-      <div></div>
-    )
-  }
-}
+const RunGraphQL = (): JSX.Element => {
+  return <div></div>;
+};
+
+export default RunGraphQL;

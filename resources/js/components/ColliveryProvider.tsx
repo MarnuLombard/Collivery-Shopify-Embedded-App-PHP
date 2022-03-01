@@ -1,6 +1,5 @@
-import React, {ReactNode} from 'react';
-import {Context} from '@shopify/app-bridge-react';
-import FeedbackBanners, {Props as FeedbackBannerProps} from './FeedbackBanners';
+import React, {createContext, PropsWithChildren, ReactNode, useMemo, useState} from 'react';
+import FeedbackBanners, {ActiveProps, AlertLevel, ChildrenProps, TextProps} from './FeedbackBanners';
 import {createBrowserFetch, FetchInterface} from '../lib/Helpers/BrowserFetch';
 import {ClientApplication} from '@shopify/app-bridge/client/types';
 
@@ -12,19 +11,16 @@ class MyContext {
   browserFetch!: FetchInterface<any>;
 }
 
-const ColliveryContext = React.createContext(new MyContext());
+const ColliveryContext = createContext(new MyContext());
+
 type Props = {
   shopifyApiKey: string;
   shop: string;
   pluginHost: string;
 };
 
-class ColliveryProvider extends React.Component<Props> {
-  static contextType = Context;
-  context!: React.ContextType<typeof ColliveryContext>;
-
-  state: FeedbackBannerProps = {
-    toggleActive: this.toggleBanner.bind(this),
+const ColliveryProvider = (props: PropsWithChildren<Props>): JSX.Element => {
+  const [state, setState] = useState<ActiveProps & TextProps & ChildrenProps>({
     criticalActive: false,
     criticalText: undefined,
     criticalChildren: undefined,
@@ -34,81 +30,72 @@ class ColliveryProvider extends React.Component<Props> {
     warningActive: false,
     warningText: undefined,
     warningChildren: undefined,
-  };
+  });
 
-  render() {
-    const {pluginHost} = this.props;
-    const polarisApp = window.app;
-    const triggerSuccess = this.triggerSuccess.bind(this);
-    const triggerError = this.triggerError.bind(this);
-    const browserFetch = createBrowserFetch(polarisApp, triggerError);
+  const toggleBanner: (level: AlertLevel) => () => void = useMemo(
+    () => (level: AlertLevel) => {
+      const name = `${level}Active` as keyof ActiveProps;
 
-    polarisApp.subscribe('collivery', data => {
-      console.log(data);
-    });
+      return () => {
+        const currentState: boolean = state[name];
+        setState({...state, [name]: !currentState});
+      };
+    },
+    [state.successActive, state.warningActive, state.criticalActive]
+  );
 
-    return (
-      <div>
-        <ColliveryContext.Provider
-            value={{
-              pluginHost,
-              triggerError,
-              triggerSuccess,
-              polarisApp,
-              browserFetch,
-            }}
-        >
-          {this.props.children}
-        </ColliveryContext.Provider>
-        <FeedbackBanners
-            toggleActive={this.state.toggleActive}
-            criticalActive={this.state.criticalActive}
-            criticalText={this.state.criticalText}
-            criticalChildren={this.state.criticalText}
-            successActive={this.state.successActive}
-            successText={this.state.successText}
-            successChildren={this.state.successText}
-            warningActive={this.state.warningActive}
-            warningText={this.state.warningText}
-            warningChildren={this.state.warningText}
-        ></FeedbackBanners>
-      </div>
-    );
-  }
-
-  toggleBanner(level: string) {
-    const name = `${level}Active` as keyof FeedbackBannerProps;
-
-    return () => {
-      const currentState = this.state[name];
-      this.setState({[name]: !currentState});
-    };
-  }
-
-  triggerError(message: string, children?: ReactNode) {
-    this.setState({
+  const triggerError = (message: string, children?: ReactNode) => {
+    setState({
+      ...state,
       criticalActive: true,
       criticalText: message,
       criticalChildren: children,
     });
-  }
+  };
 
-  triggerSuccess(message: string, children?: ReactNode) {
-    this.setState({
+  const triggerSuccess = (message: string, children?: ReactNode) => {
+    setState({
+      ...state,
       successActive: true,
       successText: message,
       successChildren: children,
     });
-  }
+  };
 
-  triggerWarning(message: string, children?: ReactNode) {
-    this.setState({
+  const triggerWarning = (message: string, children?: ReactNode) => {
+    setState({
+      ...state,
       warningActive: true,
       warningText: message,
       warningChildren: children,
     });
-  }
-}
+  };
+
+  const {pluginHost} = props;
+  const polarisApp = window.app;
+  const browserFetch = createBrowserFetch(polarisApp, triggerError);
+
+  polarisApp.subscribe('collivery', data => {
+    console.log(data);
+  });
+
+  return (
+    <div>
+      <ColliveryContext.Provider
+        value={{
+          pluginHost,
+          triggerError,
+          triggerSuccess,
+          polarisApp,
+          browserFetch,
+        }}
+      >
+        {props.children}
+      </ColliveryContext.Provider>
+      <FeedbackBanners toggleActive={toggleBanner} criticalActive={state.criticalActive} criticalText={state.criticalText} criticalChildren={state.criticalText} successActive={state.successActive} successText={state.successText} successChildren={state.successText} warningActive={state.warningActive} warningText={state.warningText} warningChildren={state.warningText}></FeedbackBanners>
+    </div>
+  );
+};
 
 export default ColliveryProvider;
 export {ColliveryContext, MyContext};

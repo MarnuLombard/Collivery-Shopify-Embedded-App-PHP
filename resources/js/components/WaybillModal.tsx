@@ -1,14 +1,11 @@
 import {Modal} from '@shopify/polaris';
-import React, {ReactNode} from 'react';
-import {ColliveryContext, MyContext} from './ColliveryProvider';
-import {ComplexAction} from '@shopify/polaris/build/ts/latest/src/types';
+import React, {useContext, useEffect, useState} from 'react';
+import {ColliveryContext} from './ColliveryProvider';
 import route from '../lib/Helpers/Route';
 import {NoteMajor} from '@shopify/polaris-icons';
 import WaybillModalDetails from './WaybillModalDetails';
 import WaybillModalImage from './WaybillModalImage';
-import {FetchInterface} from '../lib/Helpers/BrowserFetch';
-import {ResponseData} from '../types/Collivery/Responses';
-import Waybill = ShopifyPlugin.ColliveryApi.Models.Waybill;
+import {Waybill} from '../types/ShopifyPlugin/ColliveryApi/Models/Waybill';
 
 type Props = {
   open: boolean;
@@ -16,88 +13,59 @@ type Props = {
   handleModalClose: () => void;
 };
 
-type State = {
-  waybillImage: string | null;
-  imageVisible: boolean;
-};
+const WaybillModal = (props: Props): JSX.Element => {
+  const [waybillImage, setWaybillImage] = useState<string | null>();
+  const [imageVisible, setImageVisible] = useState<boolean>();
 
-class WaybillModal extends React.Component<Props, State> {
-  static contextType = ColliveryContext;
-  context!: MyContext;
+  const waybill: Waybill = props.waybillData;
+  const {browserFetch, triggerError} = useContext(ColliveryContext);
 
-  state = {
-    waybillImage: null,
-    imageVisible: false,
+  const getWaybillImage: () => void = () => {
+    return useEffect(() => {
+      browserFetch(route('api.waybills.image.show', {waybill: waybill.id}))
+        .then(response => {
+          if (!response) {
+            return triggerError('Could not get waybill image.');
+          }
+          setWaybillImage(response.data.image);
+          setImageVisible(true);
+        })
+        .catch(e => {
+          let message: string;
+          if (typeof e === 'string') {
+            message = e;
+          } else if (e instanceof Error) {
+            message = e.message;
+          } else {
+            message = 'Whoops';
+          }
+
+          triggerError(message);
+        });
+    }, [waybill.id]);
   };
 
-  get actions(): ComplexAction[] {
-    const waybill: Waybill = this.props.waybillData;
-    const {
-      browserFetch,
-      triggerError,
-    }: {
-      browserFetch: FetchInterface<ResponseData<{image: string}, never>>;
-      triggerError: (message: string, children?: ReactNode) => void;
-    } = this.context;
-    const setState = this.setState.bind(this);
-    return [
-      {
-        onAction() {
-          browserFetch(route('api.waybills.image.show', {waybill: waybill.id}))
-            .then(response => {
-              if (!response) {
-                return triggerError('Could not get waybill image.');
-              }
+  if (!props.waybillData.weight) {
+    return null;
+  }
 
-              setState({
-                waybillImage: response.data.image,
-                imageVisible: true,
-              });
-            })
-            .catch(e => {
-              let message: string;
-              if (typeof e === 'string') {
-                message = e;
-              } else if (e instanceof Error) {
-                message = e.message;
-              } else {
-                message = 'Whoops';
-              }
-
-              triggerError(message);
-            });
+  const {id} = props.waybillData;
+  return (
+    <Modal
+      open={props.open}
+      onClose={props.handleModalClose}
+      title={`Waybill ${id}`}
+      secondaryActions={[
+        {
+          onAction: getWaybillImage,
+          content: 'View Waybill',
+          icon: NoteMajor,
         },
-        content: 'View Waybill',
-        icon: NoteMajor,
-      },
-    ];
-  }
-
-  handleOnClose() {
-    this.props.handleModalClose();
-  }
-
-  handleImageClose() {
-    this.setState({
-      imageVisible: false,
-    });
-  }
-
-  render() {
-    const {open, waybillData} = this.props;
-    const {waybillImage, imageVisible} = this.state;
-
-    if (!waybillData.weight) {
-      return null;
-    }
-
-    const {id} = waybillData;
-    return (
-      <Modal open={open} onClose={this.handleOnClose.bind(this)} title={`Waybill ${id}`} secondaryActions={this.actions}>
-        {imageVisible ? <WaybillModalImage handleClose={this.handleImageClose.bind(this)} waybillImage={waybillImage} waybillData={waybillData} /> : <WaybillModalDetails waybillData={waybillData} />}
-      </Modal>
-    );
-  }
-}
+      ]}
+    >
+      {imageVisible ? <WaybillModalImage handleClose={() => setImageVisible(false)} waybillImage={waybillImage} waybillData={props.waybillData} /> : <WaybillModalDetails waybillData={props.waybillData} />}
+    </Modal>
+  );
+};
 
 export default WaybillModal;
