@@ -22,7 +22,7 @@ export enum StatusName {
   CollectionCourierDispatched = 'Collection Courier Dispatched',
   DeliveryCourierDispatched = 'Delivery Courier Dispatched',
   Completed = 'Completed',
-};
+}
 
 export enum StatusId {
   WaitingClientAcceptance = 1,
@@ -54,38 +54,17 @@ export default class Status {
   id: StatusId;
   name: StatusName;
 
-  constructor(id: StatusId, name: StatusName|null = null) {
+  constructor(id: StatusId, name: StatusName | null = null) {
     this.id = id;
     this.name = name || this.getName(id);
   }
 
   static active(): StatusId[] {
-    return [
-      StatusId.WaitingClientAcceptance,
-      StatusId.WaitingPayment,
-      StatusId.QuoteAccepted,
-      StatusId.Collected,
-      StatusId.InTransit,
-      StatusId.CollectionDriverDispatched,
-      StatusId.CollectionFailed,
-      StatusId.DeliveryFailed,
-      StatusId.ReceivedByBranch,
-      StatusId.DeliveryDriverDispatched,
-      StatusId.CollectionCourierAllocated,
-      StatusId.DeliveryCourierAllocated,
-      StatusId.CollectionDriverAllocated,
-      StatusId.DeliveryDriverAllocated,
-      StatusId.ReceivedByCourier,
-      StatusId.OnHold,
-      StatusId.PendingInvestigation,
-      StatusId.CollectionCourierDispatched,
-      StatusId.DeliveryCourierDispatched,
-    ];
+    return [StatusId.WaitingClientAcceptance, StatusId.WaitingPayment, StatusId.QuoteAccepted, StatusId.Collected, StatusId.InTransit, StatusId.CollectionDriverDispatched, StatusId.CollectionFailed, StatusId.DeliveryFailed, StatusId.ReceivedByBranch, StatusId.DeliveryDriverDispatched, StatusId.CollectionCourierAllocated, StatusId.DeliveryCourierAllocated, StatusId.CollectionDriverAllocated, StatusId.DeliveryDriverAllocated, StatusId.ReceivedByCourier, StatusId.OnHold, StatusId.PendingInvestigation, StatusId.CollectionCourierDispatched, StatusId.DeliveryCourierDispatched];
   }
 
   getName(id: StatusId): StatusName {
-    const key = Object.entries(StatusId)
-      .filter(([key, value]) => value == id)[0][0];
+    const key = Object.entries(StatusId).filter(([key, value]) => value == id)[0][0];
     const statusNames = new Map(Object.entries(StatusName));
 
     return statusNames.get(key) as StatusName;

@@ -1,10 +1,10 @@
-import {Town} from "./Town";
+import {Town} from './Town';
 
 export type Suburb = {
-  id: number,
-  name: string,
-  latitude: number,
-  longitude: number,
-  postal_code: number,
-  town: Town
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  postal_code: number;
+  town: Town;
 };
