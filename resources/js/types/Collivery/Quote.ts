@@ -1,6 +1,6 @@
 import ServiceType from './ServiceType';
 import {ResponseCollection} from './Responses';
-import WaybillService = ShopifyPlugin.ColliveryApi.Models.WaybillService;
+import {WaybillService} from '../ShopifyPlugin/ColliveryApi/Models/WaybillService';
 
 export type QuoteResponseCollection = ResponseCollection<
   {

@@ -1,0 +1,31 @@
+import {AmountSet} from './AmountSet';
+
+export type LineItem = {
+  id: number | null;
+  admin_graphql_api_id: string | null;
+  fulfillable_quantity: number | null;
+  fulfillment_service: string;
+  fulfillment_status: string | null;
+  gift_card: boolean | null;
+  grams: number;
+  name: string;
+  price: string | null;
+  price_set: AmountSet | null;
+  product_exists: boolean | null;
+  product_id: number;
+  properties: Array<any>;
+  quantity: number;
+  requires_shipping: boolean;
+  sku: string | null;
+  taxable: boolean;
+  title: string | null;
+  total_discount: string | null;
+  total_discount_set: AmountSet | null;
+  variant_id: number;
+  variant_inventory_management: string | null;
+  variant_title: string | null;
+  vendor: string | null;
+  tax_lines: Array<any> | null;
+  duties: Array<any> | null;
+  discount_allocations: Array<any> | null;
+};

@@ -1,4 +1,4 @@
-import WaybillService = ShopifyPlugin.ColliveryApi.Models.WaybillService;
+import {WaybillService} from '../ShopifyPlugin/ColliveryApi/Models/WaybillService';
 
 export enum ServiceTypeName {
   SameDay = 'Same Day',
